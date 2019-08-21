@@ -208,10 +208,10 @@ function listProyect(req, res){
 }
 
 function updateProyect(req, res){
-    var update = req.body;
+    var params = req.body;
     var proyectId = req.params.id;
 
-    Proyect.findByIdAndUpdate(proyectId, update, {new: true}, (err, proyectUpdate) => {
+    Proyect.findByIdAndUpdate(proyectId, params, {new: true}, (err, proyectUpdate) => {
         if(err){
             res.status(500).send({message: 'Error al actualizar'});
         }else{
