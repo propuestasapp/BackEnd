@@ -99,9 +99,9 @@ function saveCompany(req, res){
     var company = new Company();
     var userId = req.params.id;
 
-    if(userId != req.user.sub){
+    /*if(userId != req.user.sub){
         res.status(500).send({mnessage: 'No tienes permiso'});
-    }else{
+    }else{*/
         if(params.name && params.description){
             company.name = params.name;
             company.description = params.description;
@@ -120,7 +120,7 @@ function saveCompany(req, res){
         }else{
             res.status(200).send({message: 'Ingrese todos los campos'});
         }
-    }
+    //}
 }
 
 function listCompany(req, res){
@@ -138,9 +138,9 @@ function saveModule(req, res){
     var params = req.body;
     var modules = new Module();
 
-    if('ADMINISTRADOR' != req.user.sub){
+    /*if('ADMINISTRADOR' != req.user.sub){
         res.status(500).send({message: 'No tienes permiso'});
-    }else{
+    }else{*/
         if(params.name && params.description){
             modules.name = params.name;
             modules.description = params.description;
@@ -159,7 +159,7 @@ function saveModule(req, res){
         }else{
             res.status(200).send({message: 'Ingrese todos los campos'});
         }
-    }
+    //}
 }
 
 function listModule(req, res){
