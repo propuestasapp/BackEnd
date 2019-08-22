@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 
 var companySchema = Schema({
     name: String,
-    description: String
+    description: String,
+    country: {type: Schema.ObjectId, ref: 'country'}
 });
 
 module.exports = mongoose.model('company', companySchema);
