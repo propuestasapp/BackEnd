@@ -11,11 +11,11 @@ var User = require('../models/user');
 var Country = require('../models/country');
 
 /******************************************** COUNTRY ****************************************************/
-function saveCountry(req, res){
+function saveCountry(req, res) {
     var country = new Country();
-    
-    Country.find({},(err, countries) => {
-        if(countries.length == 0){
+
+    Country.find({}, (err, countries) => {
+        if (countries.length == 0) {
             country.name = ["Andorra,Emiratos Árabes Unidos,Afganistán,Antigua y Barbuda,Anguila,Albania,Armenia,Antillas Neerlandesas,Angola,Antártida,Argentina,Samoa Americana,Austria,Australia,Aruba,Islas Áland,Azerbaiyán,Bosnia y Herzegovina,Barbados,Bangladesh,Bélgica,Burkina Faso,Bulgaria,Bahréin,Burundi,Benin,San Bartolomé,Bermudas,Brunéi,Bolivia,Brasil,Bahamas,Bhután,Isla Bouvet,Botsuana,Belarús,Belice,Canadá,Islas Cocos,República Centro-Africana,Congo,Suiza,Costa de Marfil,Islas Cook,Chile,Camerún,China,Colombia,Costa Rica,Cuba,Cabo Verde,Islas Christmas,Chipre,República Checa,Alemania,Yibuti,Dinamarca,Domínica,República Dominicana,Argel,Ecuador,Estonia,Egipto,Sahara Occidental,Eritrea,España,Etiopía,Finlandia,Fiji,Islas Malvinas,Micronesia,Islas Faroe,Francia,Gabón,Reino Unido,Granada,Georgia,Guayana Francesa,Guernsey,Ghana,Gibraltar,Groenlandia,Gambia,Guinea,Guadalupe,Guinea Ecuatorial,Grecia,Georgia del Sur e Islas Sandwich del Sur,Guatemala,Guam,Guinea-Bissau,Guayana,Hong Kong,Islas Heard y McDonald,Honduras,Croacia,Haití,Hungría,Indonesia,Irlanda,Israel,Isla de Man,India,Territorio Británico del Océano Índico,Irak,Irán,Islandia,Italia,Jersey,Jamaica,Jordania,Japón,Kenia,Kirguistán,Camboya,Kiribati,Comoros,San Cristóbal y Nieves,Corea del Norte,Corea del Sur,Kuwait,Islas Caimán,Kazajstán,Laos,Líbano,Santa Lucía,Liechtenstein,Sri Lanka,Liberia,Lesotho,Lituania,Luxemburgo,Letonia,Libia,Marruecos,Mónaco,Moldova,Montenegro,Madagascar,Islas Marshall,Macedonia,Mali,Myanmar,Mongolia,Macao,Martinica,Mauritania,Montserrat,Malta,Mauricio,Maldivas,Malawi,México,Malasia,Mozambique,Namibia,Nueva Caledonia,Níger,Islas Norkfolk,Nigeria,Nicaragua,Países Bajos,Noruega,Nepal,Nauru,Niue,Nueva Zelanda,Omán,Panamá,Perú,Polinesia Francesa,Papúa Nueva Guinea,Filipinas,Pakistán,Polonia,San Pedro y Miquelón,Islas Pitcairn,Puerto Rico,Palestina,Portugal,Islas Palaos,Paraguay,Qatar,Reunión,Rumanía,Serbia y Montenegro,Rusia,Ruanda,Arabia Saudita,Islas Solomón,Seychelles,Sudán,Suecia,Singapur,Santa Elena,Eslovenia,Islas Svalbard y Jan Mayen,Eslovaquia,Sierra Leona,San Marino,Senegal,Somalia,Surinam,Santo Tomé y Príncipe,El Salvador,Siria,Suazilandia,Islas Turcas y Caicos,Chad,Territorios Australes Franceses,Togo,Tailandia,Tanzania,Tayikistán,Tokelau,Timor-Leste,Turkmenistán,Túnez,Tonga,Turquía,Trinidad y Tobago,Tuvalu,Taiwán,Ucrania,Uganda,Estados Unidos de América,Uruguay,Uzbekistán,Ciudad del Vaticano,San Vicente y las Granadinas,Venezuela,Islas Vírgenes Británicas,Islas Vírgenes de los Estados Unidos de América,Vietnam,Vanuatu,Wallis y Futuna,Samoa,Yemen,Mayotte,Sudáfrica"];
             country.twoLetterCode = ["AD,AE,AF,AG,AI,AL,AM,AN,AO,AQ,AR,AS,AT,AU,AW,AX,AZ,BA,BB,BD,BE,BF,BG,BH,BI,BJ,BL,BM,BN,BO,BR,BS,BT,BV,BW,BY,BZ,CA,CC,CF,CG,CH,CI,CK,CL,CM,CN,CO,CR,CU,CV,CX,CY,CZ,DE,DJ,DK,DM,DO,DZ,EC,EE,EG,EH,ER,ES,ET,FI,FJ,FK,FM,FO,FR,GA,GB,GD,GE,GF,GG,GH,GI,GL,GM,GN,GP,GQ,GR,GS,GT,GU,GW,GY,HK,HM,HN,HR,HT,HU,ID,IE,IL,IM,IN,IO,IQ,IR,IS,IT,JE,JM,JO,JP,KE,KG,KH,KI,KM,KN,KP,KR,KW,KY,KZ,LA,LB,LC,LI,LK,LR,LS,LT,LU,LV,LY,MA,MC,MD,ME,MG,MH,MK,ML,MM,MN,MO,MQ,MR,MS,MT,MU,MV,MW,MX,MY,MZ,NA,NC,NE,NF,NG,NI,NL,NO,NP,NR,NU,NZ,OM,PA,PE,PF,PG,PH,PK,PL,PM,PN,PR,PS,PT,PW,PY,QA,RE,RO,RS,RU,RW,SA,SB,SC,SD,SE,SG,SH,SI,SJ,SK,SL,SM,SN,SO,SR,ST,SV,SY,SZ,TC,TD,TF,TG,TH,TH,TJ,TK,TL,TM,TN,TO,TR,TT,TV,TW,UA,UG,US,UY,UZ,VA,VC,VE,VG,VI,VN,VU,WF,WS,YE,YT,ZA"];
             country.threeLetterCode = ["AND,ARE,AFG,ATG,AIA,ALB,ARM,ANT,AGO,ATA,ARG,ASM,AUT,AUS,ABW,ALA,AZE,BIH,BRB,BGD,BEL,BFA,BGR,BHR,BDI,BEN,BLM,BMU,BRN,BOL,BRA,BHS,BTN,BVT,BWA,BLR,BLZ,CAN,CCK,CAF,COG,CHE,CIV,COK,CHL,CMR,CHN,COL,CRI,CUB,CPV,CXR,CYP,CZE,DEU,DJI,DNK,DMA,DOM,DZA,ECU,EST,EGY,ESH,ERI,ESP,ETH,FIN,FJI,KLK,FSM,FRO,FRA,GAB,GBR,GRD,GEO,GUF,GGY,GHA,GIB,GRL,GMB,GIN,GLP,GNQ,GRC,SGS,GTM,GUM,GNB,GUY,HKG,HMD,HND,HRV,HTI,HUN,IDN,IRL,ISR,IMN,IND,IOT,IRQ,IRN,ISL,ITA,JEY,JAM,JOR,JPN,KEN,KGZ,KHM,KIR,COM,KNA,PRK,KOR,KWT,CYM,KAZ,LAO,LBN,LCA,LIE,LKA,LBR,LSO,LTU,LUX,LVA,LBY,MAR,MCO,MDA,MNE,MDG,MHL,MKD,MLI,MMR,MNG,MAC,MTQ,MRT,MSR,MLT,MUS,MDV,MWI,MEX,MYS,MOZ,NAM,NCL,NER,NFK,NGA,NIC,NLD,NOR,NPL,NRU,NIU,NZL,OMN,PAN,PER,PYF,PNG,PHL,PAK,POL,SPM,PCN,PRI,PSE,PRT,PLW,PRY,QAT,REU,ROU,SRB,RUS,RWA,SAU,SLB,SYC,SDN,SWE,SGP,SHN,SVN,SJM,SVK,SLE,SMR,SEN,SOM,SUR,STP,SLV,SYR,SWZ,TCA,TCD,ATF,TGO,THA,TZA,TJK,TKL,TLS,TKM,TUN,TON,TUR,TTO,TUV,TWN,UKR,UGA,USA,URY,UZB,VAT,VCT,VEN,VGB,VIR,VNM,VUT,WLF,WSM,YEM,MYT,ZAF"];
@@ -27,22 +27,22 @@ function saveCountry(req, res){
     });
 }
 
-function listCountry(req, res){
+function listCountry(req, res) {
     Country.find((err, countries) => {
-        if(!countries){
-            res.status(200).send({message: "No hay registros"});
-        }else{
+        if (!countries) {
+            res.status(200).send({ message: "No hay registros" });
+        } else {
             res.status(200).send(countries);
         }
     });
 }
 
 /******************************************** USER ****************************************************/
-function saveUser(req, res){
+function saveUser(req, res) {
     var params = req.body;
     var user = new User();
 
-    if(params.name && params.lastName &&params.userName && params.email && params.password && params.rol){
+    if (params.name && params.lastName && params.userName && params.email && params.password && params.rol) {
         user.name = params.name;
         user.lastName = params.lastName;
         user.userName = params.userName.toLowerCase();
@@ -50,22 +50,22 @@ function saveUser(req, res){
         user.password = params.password;
         user.rol = params.rol.toUpperCase();
 
-        User.findOne({email: user.email}, (err, issetUser) => {
-            if(issetUser){
-                res.status(200).send({message: 'El usuario ya esta registrado'});
-            }else{
-                if(!issetUser){
-                    bcrypt.hash(params.password, null, null, function(err, hash){
+        User.findOne({ email: user.email }, (err, issetUser) => {
+            if (issetUser) {
+                res.status(200).send({ message: 'El usuario ya esta registrado' });
+            } else {
+                if (!issetUser) {
+                    bcrypt.hash(params.password, null, null, function (err, hash) {
                         user.password = hash;
 
                         user.save((err, userSave) => {
-                            if(err){
-                                res.status(500).send({message: 'Error al guardar'});
-                            }else{
-                                if(!userSave){
-                                    res.status(404).send({message: 'No se pudo guardar'});
-                                }else{
-                                    res.status(200).send({user: userSave});
+                            if (err) {
+                                res.status(500).send({ message: 'Error al guardar' });
+                            } else {
+                                if (!userSave) {
+                                    res.status(404).send({ message: 'No se pudo guardar' });
+                                } else {
+                                    res.status(200).send({ user: userSave });
                                 }
                             }
                         });
@@ -73,58 +73,58 @@ function saveUser(req, res){
                 }
             }
         });
-    }else{
-        res.status(200).send({message: 'Ingrese todos los campos'});
+    } else {
+        res.status(200).send({ message: 'Ingrese todos los campos' });
     }
 }
 
-function updateUser(req,res){
+function updateUser(req, res) {
     var params = req.body;
     var userId = req.params.id;
 
-    User.findOneAndUpdate(userId,params,{new: true},(err,update)=>{
-        if(err){
-            res.status(200).send({message: 'Error al actualizar'});
-        }else{
-            res.status(200).send({user: update});
+    User.findOneAndUpdate(userId, params, { new: true }, (err, update) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al actualizar' });
+        } else {
+            res.status(200).send({ user: update });
         }
     });
 }
 
-function deleteUser(req,res){
+function deleteUser(req, res) {
     var userId = req.params.id;
 
-    User.findByIdAndDelete(userId,(err)=>{
-        if(err){
-            res.status(200).send({message: 'Error al eliminar'});
-        }else{
-            res.status(200).send({message: 'Se ha elimado de la base de datos'});
+    User.findByIdAndDelete(userId, (err) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al eliminar' });
+        } else {
+            res.status(200).send({ message: 'Se ha elimado de la base de datos' });
         }
     });
 }
 
-function login(req,res){
+function login(req, res) {
     var params = req.body;
 
-    User.findOne({email: params.email},(err,user) => {
-        if(err){
-            res.status(200).send({message: 'Error al ingresar'});
-        }else if(!user){
-            res.status(200).send({message: 'No se encontro el usuario'});
-        }else{
-            bcrypt.compare(params.password, user.password,(err, check)=>{
-                if(check){
+    User.findOne({ email: params.email }, (err, user) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al ingresar' });
+        } else if (!user) {
+            res.status(200).send({ message: 'No se encontro el usuario' });
+        } else {
+            bcrypt.compare(params.password, user.password, (err, check) => {
+                if (check) {
                     // console.log(jwt.createToken(user))
-                    res.status(200).send({toke: jwt.createToken(user)});
-                }else{
-                    res.status(200).send({message: 'Error en tu contrasena'});
+                    res.status(200).send({ toke: jwt.createToken(user) });
+                } else {
+                    res.status(200).send({ message: 'Error en tu contrasena' });
                 }
             })
         }
     })
 }
 /**************************************** COMPANY ************************************************** */
-function saveCompany(req, res){
+function saveCompany(req, res) {
     var params = req.body;
     var company = new Company();
     var userId = req.params.id;
@@ -132,143 +132,149 @@ function saveCompany(req, res){
     /*if(userId != req.user.sub){
         res.status(500).send({mnessage: 'No tienes permiso'});
     }else{*/
-        if(params.name && params.description){
-            company.name = params.name;
-            company.description = params.description;
-            company.country = params.country;
+    if (params.name && params.description) {
+        company.name = params.name;
+        company.description = params.description;
+        company.country = params.country;
 
-            Company.findOne({name: params.name, country: params.country}, (errr, found) => {
-                if(found){
-                    res.status(200).send({message: "Ya esta registrada"});
-                }else{
-                    company.save((err, companySave) => {
-                        if(err){
-                            res.status(500).send({message: 'Error al guardar'});
-                        }else{
-                            if(!companySave){
-                                res.status(404).send({message: 'No se pudo guardar'});
-                            }else{
-                                res.status(200).send({company: companySave});
-                            }
+        Company.findOne({ name: params.name, country: params.country }, (errr, found) => {
+            if (found) {
+                res.status(200).send({ message: "Ya esta registrada" });
+            } else {
+                company.save((err, companySave) => {
+                    if (err) {
+                        res.status(500).send({ message: 'Error al guardar' });
+                    } else {
+                        if (!companySave) {
+                            res.status(404).send({ message: 'No se pudo guardar' });
+                        } else {
+                            res.status(200).send({ company: companySave });
                         }
-                    });
-                }
-            });
-        }else{
-            res.status(200).send({message: 'Ingrese todos los campos'});
-        }
+                    }
+                });
+            }
+        });
+    } else {
+        res.status(200).send({ message: 'Ingrese todos los campos' });
+    }
     //}
 }
 
-function listCompany(req, res){
+function listCompany(req, res) {
     Company.find((err, companies) => {
-        if(err){
-            res.status(404).send({message: 'No se pudo listar'});
-        }else{
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
             res.status(200).send(companies);
         }
     });
 }
 
 /*********************************************** MODULE ************************************************/
-function saveModule(req, res){
+function saveModule(req, res) {
     var params = req.body;
     var modules = new Module();
 
     /*if('ADMINISTRADOR' != req.user.sub){
         res.status(500).send({message: 'No tienes permiso'});
     }else{*/
-        if(params.name && params.description){
-            modules.name = params.name;
-            modules.description = params.description;
+    if (params.name && params.description) {
+        modules.name = params.name;
+        modules.description = params.description;
 
-            modules.save((err, moduleSave) => {
-                if(err){
-                    res.status(500).send({message: 'Error al guardar'});
-                }else{
-                    if(!moduleSave){
-                        res.status(404).send({message: 'No se pudo guardar'});
-                    }else{
-                        res.status(200).send({module: moduleSave});
+        Module.findOne({ name: params.name }, (err, found) => {
+            if (found) {
+                res.status(200).send({ message: 'Ya existe el módulo' });
+            } else {
+                modules.save((err, moduleSave) => {
+                    if (err) {
+                        res.status(500).send({ message: 'Error al guardar' });
+                    } else {
+                        if (!moduleSave) {
+                            res.status(404).send({ message: 'No se pudo guardar' });
+                        } else {
+                            res.status(200).send({ module: moduleSave });
+                        }
                     }
-                }
-            });
-        }else{
-            res.status(200).send({message: 'Ingrese todos los campos'});
-        }
+                });
+            }
+        })
+    } else {
+        res.status(200).send({ message: 'Ingrese todos los campos' });
+    }
     //}
 }
 
-function listModule(req, res){
+function listModule(req, res) {
     Module.find((err, modules) => {
-        if(err){
-            res.status(404).send({message: 'No se pudo listar'});
-        }else{
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
             res.status(200).send(modules);
         }
     });
 }
 
 /********************************************** PROYECT **************************************************/
-function saveProyect(req, res){
+function saveProyect(req, res) {
     var params = req.body;
     var proyect = new Proyect();
 
-    if(params.name && params.description){
+    if (params.name && params.description) {
         proyect.name = params.name;
         proyect.description = params.description;
 
         proyect.save((err, proyectSave) => {
-            if(err){
-                res.status(500).send({message: 'Error al guardar'});
-            }else{
-                if(!proyectSave){
-                    res.status(404).send({message: 'No se pudo guardar'});
-                }else{
-                    res.status(200).send({proyect: proyectSave});
+            if (err) {
+                res.status(500).send({ message: 'Error al guardar' });
+            } else {
+                if (!proyectSave) {
+                    res.status(404).send({ message: 'No se pudo guardar' });
+                } else {
+                    res.status(200).send({ proyect: proyectSave });
                 }
             }
         });
-    }else{
-        res.status(200).send({message: 'Ingrese todos los campos'});
+    } else {
+        res.status(200).send({ message: 'Ingrese todos los campos' });
     }
 }
 
-function listProyect(req, res){
+function listProyect(req, res) {
     Proyect.find((err, proyects) => {
-        if(err){
-            res.status(404).send({message: 'No se pudo listar'});
-        }else{
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
             res.status(200).send(proyects);
         }
     });
 }
 
-function updateProyect(req, res){
+function updateProyect(req, res) {
     var params = req.body;
     var proyectId = req.params.id;
 
-    Proyect.findByIdAndUpdate(proyectId, params, {new: true}, (err, proyectUpdate) => {
-        if(err){
-            res.status(500).send({message: 'Error al actualizar'});
-        }else{
-            if(!proyectUpdate){
-                res.status(404).send({message: 'No se pudo actualizar'});
-            }else{
-                res.status(200).send({proyectUpdate});
+    Proyect.findByIdAndUpdate(proyectId, params, { new: true }, (err, proyectUpdate) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al actualizar' });
+        } else {
+            if (!proyectUpdate) {
+                res.status(404).send({ message: 'No se pudo actualizar' });
+            } else {
+                res.status(200).send({ proyectUpdate });
             }
         }
     });
 }
 
-function deleteProyect(req, res){
+function deleteProyect(req, res) {
     var proyectId = req.params.id;
-    
+
     Proyect.findByIdAndDelete(proyectId, (err, proyectDelete) => {
-        if(err){
-            res.status(500).send({message: 'Error al eliminar'});
-        }else{
-            res.status(200).send({message: 'Se elimino correctamente'});
+        if (err) {
+            res.status(500).send({ message: 'Error al eliminar' });
+        } else {
+            res.status(200).send({ message: 'Se elimino correctamente' });
         }
     });
 }
