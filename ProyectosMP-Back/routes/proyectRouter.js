@@ -5,6 +5,7 @@ var proyectController = require('../Controllers/proyectController');
 var md_auth = require('../middlewares/authenticated');
 var api = express.Router();
 
+api.get('/listCountry', proyectController.listCountry);
 api.post('/saveUser', proyectController.saveUser);
 api.put('/updateUser/:id', proyectController.updateUser);
 api.put('/deleteUser/:id', proyectController.deleteUser);
