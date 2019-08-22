@@ -45,7 +45,7 @@ function saveUser(req, res) {
     if (params.name && params.lastName && params.userName && params.email && params.password && params.rol) {
         user.name = params.name;
         user.lastName = params.lastName;
-        user.userName = params.userName.toLowerCase();
+        user.userName = params.userName;
         user.email = params.email.toLowerCase();
         user.password = params.password;
         user.rol = params.rol.toUpperCase();
@@ -105,7 +105,7 @@ function deleteUser(req, res) {
 
 function login(req, res) {
     var params = req.body;
-
+    console.log(1)
     User.findOne({ email: params.email }, (err, user) => {
         if (err) {
             res.status(200).send({ message: 'Error al ingresar' });
@@ -115,7 +115,7 @@ function login(req, res) {
             bcrypt.compare(params.password, user.password, (err, check) => {
                 if (check) {
                     // console.log(jwt.createToken(user))
-                    res.status(200).send({ toke: jwt.createToken(user) });
+                    res.status(200).send({ token: jwt.createToken(user) });
                 } else {
                     res.status(200).send({ message: 'Error en tu contrasena' });
                 }
