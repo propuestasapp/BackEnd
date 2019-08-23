@@ -167,6 +167,8 @@ function saveCompany(req, res) {
 function listCompany(req, res) {
     var saus = req.params.rol;
 
+    
+
     Company.find({status: saus}, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
