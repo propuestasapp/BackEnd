@@ -114,7 +114,7 @@ function login(req, res) {
             bcrypt.compare(params.password, user.password, (err, check) => {
                 if (check) {
                     // console.log(jwt.createToken(user))
-                    res.status(200).send({ token: jwt.createToken(user) });
+                    res.status(200).send({ token: jwt.createToken(user), user: user});
                 } else {
                     res.status(200).send({ message: 'Error en tu contrasena' });
                 }
@@ -126,11 +126,16 @@ function login(req, res) {
 function saveCompany(req, res) {
     var params = req.body;
     var company = new Company();
-    var userId = req.params.id;
+    var rol = req.params.rol;
 
-    if('ADMIN' != params.rol){
+    if('ADVISER' == rol){
         res.status(500).send({message: 'No tienes permiso'});
     }else{
+        if('ADMIN' == rol){
+            company.status = 'ACCEPTED';
+        }else{
+            company.status = 'REVIEW'
+        }
         if (params.name && params.description) {
             company.name = params.name;
             company.description = params.description;
@@ -160,11 +165,13 @@ function saveCompany(req, res) {
 }
 
 function listCompany(req, res) {
-    Company.find((err, companies) => {
+    var saus = req.params.rol;
+
+    Company.find({status: saus}, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send(companies);
+            res.status(200).send({companies: companies, rol: req.user});
         }
     });
 }
