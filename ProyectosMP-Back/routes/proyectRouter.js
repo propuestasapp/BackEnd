@@ -10,7 +10,7 @@ api.post('/saveUser', proyectController.saveUser);
 api.put('/updateUser/:id', proyectController.updateUser);
 api.put('/deleteUser/:id', proyectController.deleteUser);
 api.post('/login', proyectController.login);
-api.post('/saveCompany', proyectController.saveCompany);
+api.post('/saveCompany/:rol', proyectController.saveCompany);
 api.get('/listCompany', proyectController.listCompany);
 api.post('/saveModule', proyectController.saveModule);
 api.get('/listModule', proyectController.listModule);

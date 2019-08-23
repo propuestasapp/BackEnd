@@ -105,7 +105,6 @@ function deleteUser(req, res) {
 
 function login(req, res) {
     var params = req.body;
-    console.log(1)
     User.findOne({ email: params.email }, (err, user) => {
         if (err) {
             res.status(200).send({ message: 'Error al ingresar' });
@@ -129,35 +128,35 @@ function saveCompany(req, res) {
     var company = new Company();
     var userId = req.params.id;
 
-    /*if(userId != req.user.sub){
-        res.status(500).send({mnessage: 'No tienes permiso'});
-    }else{*/
-    if (params.name && params.description) {
-        company.name = params.name;
-        company.description = params.description;
-        company.country = params.country;
+    if('ADMIN' != params.rol){
+        res.status(500).send({message: 'No tienes permiso'});
+    }else{
+        if (params.name && params.description) {
+            company.name = params.name;
+            company.description = params.description;
+            company.country = params.country;
 
-        Company.findOne({ name: params.name, country: params.country }, (errr, found) => {
-            if (found) {
-                res.status(200).send({ message: "Ya esta registrada" });
-            } else {
-                company.save((err, companySave) => {
-                    if (err) {
-                        res.status(500).send({ message: 'Error al guardar' });
-                    } else {
-                        if (!companySave) {
-                            res.status(404).send({ message: 'No se pudo guardar' });
+            Company.findOne({ name: params.name, country: params.country }, (errr, found) => {
+                if (found) {
+                    res.status(200).send({ message: "Ya esta registrada"});
+                } else {
+                    company.save((err, companySave) => {
+                        if (err) {
+                            res.status(500).send({ message: 'Error al guardar' });
                         } else {
-                            res.status(200).send({ company: companySave });
+                            if (!companySave) {
+                                res.status(404).send({ message: 'No se pudo guardar' });
+                            } else {
+                                res.status(200).send({ company: companySave });
+                            }
                         }
-                    }
-                });
-            }
-        });
-    } else {
-        res.status(200).send({ message: 'Ingrese todos los campos' });
+                    });
+                }
+            });
+        } else {
+            res.status(200).send({ message: 'Ingrese todos los campos' });
+        }
     }
-    //}
 }
 
 function listCompany(req, res) {
