@@ -14,7 +14,7 @@ var proyectSchema = Schema({
     dateOfRequest: Date,
     dateOfStart: Date,
     whoAskFor: String,
-    percentageOfProgrss: String,
+    percentageOfProgress: String,
     dateLimit: Date,
     remainingDays: Number,
     dateOfDelivery: Date,
