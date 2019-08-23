@@ -219,9 +219,25 @@ function saveProyect(req, res) {
     var params = req.body;
     var proyect = new Proyect();
 
-    if (params.name && params.description) {
-        proyect.name = params.name;
+    if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
+        proyect._id = params._id;
+        proyect.responsability = params.responsability;
+        proyect.priorityDocument = params.priorityDocument;
+        proyect.priorityToday = params.priorityToday;
+        proyect.company = params.company;
+        proyect.country = params.country;
+        proyect.module = params.module;
+        proyect.dateRequest = params.dateRequest;
+        proyect.dateStart = params.dateStart;
+        proyect.whoAskFor = params.whoAskFor;
+        proyect.percentageProgress = params.percentageProgress;
+        proyect.dateLimit = params.dateLimit;
+        proyect.remainingDays = params.remainingDays;
+        proyect.dateDelivery = params.dateDelivery;
+        proyect.effectiveDays = params.effectiveDays;
         proyect.description = params.description;
+        proyect.status = params.status;
+        proyect.countersStatus = params.status;
 
         proyect.save((err, proyectSave) => {
             if (err) {
