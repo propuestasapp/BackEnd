@@ -168,7 +168,6 @@ function listCompany(req, res) {
     var saus = req.params.rol;
 
     
-
     Company.find({status: saus}, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
@@ -178,6 +177,46 @@ function listCompany(req, res) {
     });
 }
 
+function searchCompany(req, res) {
+    var companyId = req.params.id;
+
+    Company.findOne({_id: companyId}, (err, company) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            res.status(200).send({company});
+        }
+    });
+}
+
+function updateCompany(req, res) {
+    var params = req.body;
+    var companyId = req.params.id;
+
+    Company.findByIdAndUpdate(companyId, params, { new: true }, (err, companyUpdate) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al actualizar' });
+        } else {
+            if (!companyUpdate) {
+                res.status(404).send({ message: 'No se pudo actualizar' });
+            } else {
+                res.status(200).send({ companyUpdate });
+            }
+        }
+    });
+}
+
+function deleteCompany(req, res) {
+    var companyId = req.params.id;
+
+    Company.findByIdAndDelete(companyId, (err, companyDelete) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al eliminar' });
+        } else {
+            res.status(200).send({ message: 'Se elimino correctamente' });
+        }
+    });
+}
 /*********************************************** MODULE ************************************************/
 function saveModule(req, res) {
     var params = req.body;
@@ -229,7 +268,9 @@ function saveProyect(req, res) {
     var proyect = new Proyect();
 
     if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
+    if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
         proyect._id = params._id;
+        proyect.corelativeNumber = params.corelativeNumber;
         proyect.responsability = params.responsability;
         proyect.priorityDocument = params.priorityDocument;
         proyect.priorityToday = params.priorityToday;
@@ -312,6 +353,9 @@ module.exports = {
     login,
     saveCompany,
     listCompany,
+    searchCompany,
+    updateCompany,
+    deleteCompany,
     saveModule,
     listModule,
     saveProyect,
