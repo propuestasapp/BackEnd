@@ -220,39 +220,47 @@ function deleteCompany(req, res) {
 function saveModule(req, res) {
     var params = req.body;
     var modules = new Module();
+    var rol = req.params.rol;
 
-    /*if('ADMINISTRADOR' != req.user.sub){
+    if('ADVISER' == rol){
         res.status(500).send({message: 'No tienes permiso'});
-    }else{*/
-    if (params.name && params.description) {
-        modules.name = params.name;
-        modules.description = params.description;
+    }else{
+        if('ADMIN' == rol){
+            company.status = 'ACCEPTED';
+        }else{
+            company.status = 'REVIEW'
+        }
+        if (params.name && params.description) {
+            modules.name = params.name;
+            modules.description = params.description;
 
-        Module.findOne({ name: modules.name }, (err, found) => {
-            if (found) {
-                res.status(200).send({ message: 'Ya existe el módulo' });
-            } else {
-                modules.save((err, moduleSave) => {
-                    if (err) {
-                        res.status(500).send({ message: 'Error al guardar' });
-                    } else {
-                        if (!moduleSave) {
-                            res.status(404).send({ message: 'No se pudo guardar' });
+            Module.findOne({ name: modules.name }, (err, found) => {
+                if (found) {
+                    res.status(200).send({ message: 'Ya existe el módulo' });
+                } else {
+                    modules.save((err, moduleSave) => {
+                        if (err) {
+                            res.status(500).send({ message: 'Error al guardar' });
                         } else {
-                            res.status(200).send({ module: moduleSave });
+                            if (!moduleSave) {
+                                res.status(404).send({ message: 'No se pudo guardar' });
+                            } else {
+                                res.status(200).send({ module: moduleSave });
+                            }
                         }
-                    }
-                });
-            }
-        })
-    } else {
-        res.status(200).send({ message: 'Ingrese todos los campos' });
+                    });
+                }
+            })
+        } else {
+            res.status(200).send({ message: 'Ingrese todos los campos' });
+        }
     }
-    //}
 }
 
 function listModule(req, res) {
-    Module.find((err, modules) => {
+    var saus = req.params.rol;
+
+    Module.find({status: saus}, (err, modules) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
@@ -261,6 +269,46 @@ function listModule(req, res) {
     });
 }
 
+function searchModule(req, res) {
+    var moduleId = req.params.id;
+
+    Module.findOne({_id: moduleId}, (err, module) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            res.status(200).send({module});
+        }
+    });
+}
+
+function updateModule(req, res) {
+    var params = req.body;
+    var moduleId = req.params.id;
+
+    Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al actualizar' });
+        } else {
+            if (!moduleUpdate) {
+                res.status(404).send({ message: 'No se pudo actualizar' });
+            } else {
+                res.status(200).send({ moduleUpdate });
+            }
+        }
+    });
+}
+
+function deleteModule(req, res) {
+    var ModuleId = req.params.id;
+
+    Module.findByIdAndDelete(moduleId, (err, moduleDelete) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al eliminar' });
+        } else {
+            res.status(200).send({ message: 'Se elimino correctamente' });
+        }
+    });
+}
 /********************************************** PROYECT **************************************************/
 function saveProyect(req, res) {
     var params = req.body;
@@ -356,6 +404,9 @@ module.exports = {
     deleteCompany,
     saveModule,
     listModule,
+    searchModule,
+    updateModule,
+    deleteModule,
     saveProyect,
     listProyect,
     updateProyect,
