@@ -272,7 +272,7 @@ function listModule(req, res) {
 function searchModule(req, res) {
     var moduleId = req.params.id;
 
-    Module.findOne({_id: moduleId}, (err, module) => {
+    Module.findOne({name: moduleId}, (err, module) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
@@ -299,7 +299,7 @@ function updateModule(req, res) {
 }
 
 function deleteModule(req, res) {
-    var ModuleId = req.params.id;
+    var moduleId = req.params.id;
 
     Module.findByIdAndDelete(moduleId, (err, moduleDelete) => {
         if (err) {
@@ -314,40 +314,44 @@ function saveProyect(req, res) {
     var params = req.body;
     var proyect = new Proyect();
 
-    if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
-        proyect._id = params._id;
-        proyect.corelativeNumber = params.corelativeNumber;
-        proyect.responsability = params.responsability;
-        proyect.priorityDocument = params.priorityDocument;
-        proyect.priorityToday = params.priorityToday;
-        proyect.company = params.company;
-        proyect.country = params.country;
-        proyect.module = params.module;
-        proyect.dateRequest = params.dateRequest;
-        proyect.dateStart = params.dateStart;
-        proyect.whoAskFor = params.whoAskFor;
-        proyect.percentageProgress = params.percentageProgress;
-        proyect.dateLimit = params.dateLimit;
-        proyect.remainingDays = params.remainingDays;
-        proyect.dateDelivery = params.dateDelivery;
-        proyect.effectiveDays = params.effectiveDays;
-        proyect.description = params.description;
-        proyect.status = params.status;
-        proyect.countersStatus = params.status;
+    if('COLLABORATOR' == rol || 'ADVISER' == rol){
+        res.status(500).send({message: 'No tienes permiso'});
+    }else{
+        if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
+            proyect._id = params._id;
+            proyect.corelativeNumber = params.corelativeNumber;
+            proyect.responsability = params.responsability;
+            proyect.priorityDocument = params.priorityDocument;
+            proyect.priorityToday = params.priorityToday;
+            proyect.company = params.company;
+            proyect.country = params.country;
+            proyect.module = params.module;
+            proyect.dateRequest = params.dateRequest;
+            proyect.dateStart = params.dateStart;
+            proyect.whoAskFor = params.whoAskFor;
+            proyect.percentageProgress = params.percentageProgress;
+            proyect.dateLimit = params.dateLimit;
+            proyect.remainingDays = params.remainingDays;
+            proyect.dateDelivery = params.dateDelivery;
+            proyect.effectiveDays = params.effectiveDays;
+            proyect.description = params.description;
+            proyect.status = params.status;
+            proyect.countersStatus = params.status;
 
-        proyect.save((err, proyectSave) => {
-            if (err) {
-                res.status(500).send({ message: 'Error al guardar' });
-            } else {
-                if (!proyectSave) {
-                    res.status(404).send({ message: 'No se pudo guardar' });
+            proyect.save((err, proyectSave) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error al guardar' });
                 } else {
-                    res.status(200).send({ proyect: proyectSave });
+                    if (!proyectSave) {
+                        res.status(404).send({ message: 'No se pudo guardar' });
+                    } else {
+                        res.status(200).send({ proyect: proyectSave });
+                    }
                 }
-            }
-        });
-    } else {
-        res.status(200).send({ message: 'Ingrese todos los campos' });
+            });
+        } else {
+            res.status(200).send({ message: 'Ingrese todos los campos' });
+        }
     }
 }
 
