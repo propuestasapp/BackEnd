@@ -136,12 +136,12 @@ function saveCompany(req, res) {
         }else{
             company.status = 'REVIEW'
         }
-        if (params.name && params.description) {
-            company.name = params.name;
+        if (params.name && params.description && params.country) {
+            company.name = params.name.toUpperCase();
             company.description = params.description;
             company.country = params.country;
 
-            Company.findOne({ name: params.name, country: params.country }, (errr, found) => {
+            Company.findOne({ name: company.name, country: company.country }, (errr, found) => {
                 if (found) {
                     res.status(200).send({ message: "Ya esta registrada"});
                 } else {
@@ -228,7 +228,7 @@ function saveModule(req, res) {
         modules.name = params.name;
         modules.description = params.description;
 
-        Module.findOne({ name: params.name }, (err, found) => {
+        Module.findOne({ name: modules.name }, (err, found) => {
             if (found) {
                 res.status(200).send({ message: 'Ya existe el módulo' });
             } else {
