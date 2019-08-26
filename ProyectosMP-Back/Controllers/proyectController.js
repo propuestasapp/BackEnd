@@ -167,7 +167,6 @@ function saveCompany(req, res) {
 function listCompany(req, res) {
     var saus = req.params.rol;
 
-    
     Company.find({status: saus}, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
@@ -267,7 +266,6 @@ function saveProyect(req, res) {
     var params = req.body;
     var proyect = new Proyect();
 
-    if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
     if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
         proyect._id = params._id;
         proyect.corelativeNumber = params.corelativeNumber;
