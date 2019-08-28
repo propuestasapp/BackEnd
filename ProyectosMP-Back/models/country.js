@@ -7,7 +7,8 @@ var countrySchema = Schema({
     name: [],
     twoLetterCode: [],
     threeLetterCode: [],
-    numericCode: []
+    numericCode: [],
+    number: Number
 })
 
 module.exports = mongoose.model('country', countrySchema);

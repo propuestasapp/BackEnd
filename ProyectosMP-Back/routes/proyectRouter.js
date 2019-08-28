@@ -6,6 +6,7 @@ var md_auth = require('../middlewares/authenticated');
 var api = express.Router();
 
 api.get('/listCountry', proyectController.listCountry);
+api.put('/updateCountry/:rol/:newYear', proyectController.updateCountry);
 api.post('/saveUser', proyectController.saveUser);
 api.put('/updateUser/:id', proyectController.updateUser);
 api.put('/deleteUser/:id', proyectController.deleteUser);
@@ -20,7 +21,7 @@ api.get('/listModule/:rol', proyectController.listModule);
 api.post('/searchModule/:id', proyectController.searchModule);
 api.put('/updateModule/:id', proyectController.updateModule);
 api.put('/deleteModule/:id', proyectController.deleteModule);
-api.post('/saveProyect', proyectController.saveProyect);
+api.post('/saveProyect/:rol', proyectController.saveProyect);
 api.get('/listProyect', proyectController.listProyect);
 api.put('/updateProyect/:id', proyectController.updateProyect);
 api.put('/deleteProyect/:id', proyectController.deleteProyect);
