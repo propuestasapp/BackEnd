@@ -78,15 +78,45 @@ function saveUser(req, res) {
     }
 }
 
+function listUser(req, res) {
+
+    User.find((err, users) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            res.status(200).send({ users: users });
+        }
+    });
+}
+
+function searchUser(req, res) {
+    var userId = req.params.id;
+
+    User.findOne({ _id: userId }, (err, user) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            if (!user) {
+                res.stats(404).send({ message: 'No se pudo listar' });
+            } else {
+                res.status(200).send({ user });
+            }
+        }
+    });
+}
+
 function updateUser(req, res) {
     var params = req.body;
     var userId = req.params.id;
-
-    User.findOneAndUpdate(userId, params, { new: true }, (err, update) => {
+    User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
         if (err) {
             res.status(200).send({ message: 'Error al actualizar' });
         } else {
-            res.status(200).send({ user: update });
+            if (!update) {
+                res.stats(404).send({ message: 'No se pudo actualizar' });
+            } else {
+                res.status(200).send({ user: update });
+            }
         }
     });
 }
@@ -94,11 +124,15 @@ function updateUser(req, res) {
 function deleteUser(req, res) {
     var userId = req.params.id;
 
-    User.findByIdAndDelete(userId, (err) => {
+    User.findByIdAndDelete(userId, (err, userSave) => {
         if (err) {
             res.status(200).send({ message: 'Error al eliminar' });
         } else {
-            res.status(200).send({ message: 'Se ha elimado de la base de datos' });
+            if (!userSave) {
+                res.status(404).send({ message: 'Error al eliminar' });
+            } else {
+                res.status(200).send({ message: 'Se ha elimado de la base de datos' });
+            }
         }
     });
 }
@@ -114,7 +148,7 @@ function login(req, res) {
             bcrypt.compare(params.password, user.password, (err, check) => {
                 if (check) {
                     // console.log(jwt.createToken(user))
-                    res.status(200).send({ token: jwt.createToken(user), user: user});
+                    res.status(200).send({ token: jwt.createToken(user), user: user });
                 } else {
                     res.status(200).send({ message: 'Error en tu contrasena' });
                 }
@@ -128,12 +162,12 @@ function saveCompany(req, res) {
     var company = new Company();
     var rol = req.params.rol;
 
-    if('ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
-        if('ADMIN' == rol){
+    if ('ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+    } else {
+        if ('ADMIN' == rol) {
             company.status = 'ACCEPTED';
-        }else{
+        } else {
             company.status = 'REVIEW'
         }
         if (params.name && params.description && params.country) {
@@ -143,7 +177,7 @@ function saveCompany(req, res) {
 
             Company.findOne({ name: company.name, country: company.country }, (errr, found) => {
                 if (found) {
-                    res.status(200).send({ message: "Ya esta registrada"});
+                    res.status(200).send({ message: "Ya esta registrada" });
                 } else {
                     company.save((err, companySave) => {
                         if (err) {
@@ -167,11 +201,11 @@ function saveCompany(req, res) {
 function listCompany(req, res) {
     var saus = req.params.rol;
 
-    Company.find({status: saus}, (err, companies) => {
+    Company.find({ status: saus }, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({companies: companies, rol: req.user});
+            res.status(200).send({ companies: companies, rol: req.user });
         }
     });
 }
@@ -179,11 +213,11 @@ function listCompany(req, res) {
 function searchCompany(req, res) {
     var companyId = req.params.id;
 
-    Company.findOne({_id: companyId}, (err, company) => {
+    Company.findOne({ _id: companyId }, (err, company) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({company});
+            res.status(200).send({ company });
         }
     });
 }
@@ -212,7 +246,12 @@ function deleteCompany(req, res) {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar' });
         } else {
-            res.status(200).send({ message: 'Se elimino correctamente' });
+            if (!companyDelete) {
+                res.status(404).send({ message: 'Error al eliminar' })
+            } else {
+                res.status(200).send({ message: 'Se elimino correctamente' });
+            }
+
         }
     });
 }
@@ -222,13 +261,14 @@ function saveModule(req, res) {
     var modules = new Module();
     var rol = req.params.rol;
 
-    if('ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
-        if('ADMIN' == rol){
-            company.status = 'ACCEPTED';
-        }else{
-            company.status = 'REVIEW'
+    if ('ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+        console.log(res)
+    } else {
+        if ('ADMIN' == rol) {
+            modules.status = 'ACCEPTED';
+        } else {
+            modules.status = 'REVIEW'
         }
         if (params.name && params.description) {
             modules.name = params.name;
@@ -258,13 +298,13 @@ function saveModule(req, res) {
 }
 
 function listModule(req, res) {
-    var saus = req.params.rol;
+    var saus1 = req.params.rol;
 
-    Module.find({status: saus}, (err, modules) => {
+    Module.find({ status: saus1 }, (err, modules) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send(modules);
+            res.status(200).send({ module: modules, rol: req.user });
         }
     });
 }
@@ -272,11 +312,11 @@ function listModule(req, res) {
 function searchModule(req, res) {
     var moduleId = req.params.id;
 
-    Module.findOne({name: moduleId}, (err, module) => {
+    Module.findOne({ _id: moduleId }, (err, modules) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({module});
+            res.status(200).send({ Modules: modules });
         }
     });
 }
@@ -305,7 +345,12 @@ function deleteModule(req, res) {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar' });
         } else {
-            res.status(200).send({ message: 'Se elimino correctamente' });
+            if (!moduleDelete) {
+                res.status(404).send({ message: 'Error al eliminar' });
+            } else {
+                res.status(200).send({ message: 'Se elimino correctamente' });
+            }
+
         }
     });
 }
@@ -314,9 +359,9 @@ function saveProyect(req, res) {
     var params = req.body;
     var proyect = new Proyect();
 
-    if('COLLABORATOR' == rol || 'ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
+    if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+    } else {
         if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.countersStatus) {
             proyect._id = params._id;
             proyect.corelativeNumber = params.corelativeNumber;
@@ -414,5 +459,7 @@ module.exports = {
     saveProyect,
     listProyect,
     updateProyect,
-    deleteProyect
+    deleteProyect,
+    listUser,
+    searchUser
 }

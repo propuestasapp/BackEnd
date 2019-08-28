@@ -24,5 +24,7 @@ api.post('/saveProyect', proyectController.saveProyect);
 api.get('/listProyect', proyectController.listProyect);
 api.put('/updateProyect/:id', proyectController.updateProyect);
 api.put('/deleteProyect/:id', proyectController.deleteProyect);
+api.get('/listUser', proyectController.listUser);
+api.post('/searchUser/:id',proyectController.searchUser);
 
 module.exports = api;
