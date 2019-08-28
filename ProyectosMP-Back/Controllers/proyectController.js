@@ -388,6 +388,7 @@ function deleteModule(req, res) {
 function saveProyect(req, res) {
     var params = req.body;
     var proyect = new Proyect();
+    var rol = req.params.rol;
 
     if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
         res.status(500).send({ message: 'No tienes permiso' });
@@ -412,7 +413,7 @@ function saveProyect(req, res) {
             proyect.description = params.description;
             proyect.status = params.status;
             proyect.countersStatus = params.status;
-
+            
             proyect.save((err, proyectSave) => {
                 if (err) {
                     res.status(500).send({ message: 'Error al guardar' });
