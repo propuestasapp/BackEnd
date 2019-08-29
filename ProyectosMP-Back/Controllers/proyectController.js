@@ -328,14 +328,18 @@ function saveModule(req, res) {
 }
 
 function listModule(req, res) {
-    var saus = req.params.rol;
+    var stat = req.params.rol;
 
-    Module.find({ status: saus }, (err, modules) => {
-        if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
-        } else {
-            res.status(200).send({ modules});
-        }
+    Module.find({status: stat}, (err, found) => {
+       if(err){
+           res.status(200).send({message: 'Error al listar'});
+       }else{
+           if(!found){
+               res.status(200).send({message: 'No se encontro nada'});
+           }else{
+               res.status(200).send({modules: found})
+           }
+       }
     });
 }
 
