@@ -243,11 +243,11 @@ function listCompany(req, res) {
 function searchCompany(req, res) {
     var companyId = req.params.id;
 
-    Company.findOne({_id: companyId}, (err, company) => {
+    Company.findOne({ _id: companyId}, (err, company) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({company});
+            res.status(200).send(company);
         }
     });
 }
@@ -343,7 +343,19 @@ function listModule(req, res) {
     });
 }
 
-function searchModule(req, res) {
+function searchModuleId(req, res) {
+    var moduleId = req.params.id;
+
+    Module.findOne({ _id: moduleId }, (err, module) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            res.status(200).send({ module });
+        }
+    });
+}
+
+function searchModuleName(req, res) {
     var moduleId = req.params.id;
 
     Module.findOne({ name: moduleId }, (err, module) => {
@@ -489,7 +501,8 @@ module.exports = {
     deleteCompany,
     saveModule,
     listModule,
-    searchModule,
+    searchModuleName,
+    searchModuleId,
     updateModule,
     deleteModule,
     saveProyect,
