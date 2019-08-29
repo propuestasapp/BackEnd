@@ -178,7 +178,7 @@ function login(req, res) {
             bcrypt.compare(params.password, user.password, (err, check) => {
                 if (check) {
                     // console.log(jwt.createToken(user))
-                    res.status(200).send({ token: jwt.createToken(user), user: user });
+                    res.status(200).send({ token: jwt.createToken(user), user: user});
                 } else {
                     res.status(200).send({ message: 'Error en tu contrasena' });
                 }
@@ -192,12 +192,12 @@ function saveCompany(req, res) {
     var company = new Company();
     var rol = req.params.rol;
 
-    if ('ADVISER' == rol) {
-        res.status(500).send({ message: 'No tienes permiso' });
-    } else {
-        if ('ADMIN' == rol) {
+    if('ADVISER' == rol){
+        res.status(500).send({message: 'No tienes permiso'});
+    }else{
+        if('ADMIN' == rol){
             company.status = 'ACCEPTED';
-        } else {
+        }else{
             company.status = 'REVIEW'
         }
         if (params.name && params.description && params.country) {
@@ -207,7 +207,7 @@ function saveCompany(req, res) {
 
             Company.findOne({ name: company.name, country: company.country }, (errr, found) => {
                 if (found) {
-                    res.status(200).send({ message: "Ya esta registrada" });
+                    res.status(200).send({ message: "Ya esta registrada"});
                 } else {
                     company.save((err, companySave) => {
                         if (err) {
@@ -231,11 +231,11 @@ function saveCompany(req, res) {
 function listCompany(req, res) {
     var saus = req.params.rol;
 
-    Company.find({ status: saus }, (err, companies) => {
+    Company.find({status: saus}, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ companies: companies, rol: req.user });
+            res.status(200).send({companies: companies, rol: req.user});
         }
     });
 }
@@ -243,11 +243,11 @@ function listCompany(req, res) {
 function searchCompany(req, res) {
     var companyId = req.params.id;
 
-    Company.findOne({ _id: companyId }, (err, company) => {
+    Company.findOne({_id: companyId}, (err, company) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ company });
+            res.status(200).send({company});
         }
     });
 }
@@ -291,14 +291,13 @@ function saveModule(req, res) {
     var modules = new Module();
     var rol = req.params.rol;
 
-    if ('ADVISER' == rol) {
-        res.status(500).send({ message: 'No tienes permiso' });
-        console.log(res)
-    } else {
-        if ('ADMIN' == rol) {
-            modules.status = 'ACCEPTED';
-        } else {
-            modules.status = 'REVIEW'
+    if('ADVISER' == rol){
+        res.status(500).send({message: 'No tienes permiso'});
+    }else{
+        if('ADMIN' == rol){
+            company.status = 'ACCEPTED';
+        }else{
+            company.status = 'REVIEW'
         }
         if (params.name && params.description) {
             modules.name = params.name;
@@ -328,13 +327,13 @@ function saveModule(req, res) {
 }
 
 function listModule(req, res) {
-    var saus1 = req.params.rol;
+    var saus = req.params.rol;
 
-    Module.find({ status: saus1 }, (err, modules) => {
+    Module.find({status: saus}, (err, modules) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ module: modules, rol: req.user });
+            res.status(200).send(modules);
         }
     });
 }
@@ -342,11 +341,11 @@ function listModule(req, res) {
 function searchModule(req, res) {
     var moduleId = req.params.id;
 
-    Module.findOne({ _id: moduleId }, (err, modules) => {
+    Module.findOne({name: moduleId}, (err, module) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ Modules: modules });
+            res.status(200).send({module});
         }
     });
 }
@@ -390,9 +389,9 @@ function saveProyect(req, res) {
     var proyect = new Proyect();
     var rol = req.params.rol;
 
-    if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
-        res.status(500).send({ message: 'No tienes permiso' });
-    } else {
+    if('COLLABORATOR' == rol || 'ADVISER' == rol){
+        res.status(500).send({message: 'No tienes permiso'});
+    }else{
         if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status) {
             proyect._id = params._id;
             proyect.corelativeNumber = params.corelativeNumber;
@@ -413,10 +412,10 @@ function saveProyect(req, res) {
             proyect.description = params.description;
             proyect.status = params.status;
             proyect.countersStatus = params.status;
-            
             proyect.save((err, proyectSave) => {
                 if (err) {
-                    res.status(500).send({ message: 'Error al guardar' });
+                    res.status(200).send({ message: 'Error al guardar' });
+                    console.log(err)
                 } else {
                     if (!proyectSave) {
                         res.status(404).send({ message: 'No se pudo guardar' });
