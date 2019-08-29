@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var proyectSchema = Schema({
     _id: String,
-    corelativeNumber: String,
     responsability: String,
     priorityDocument: Number,
     priorityToday: Number,

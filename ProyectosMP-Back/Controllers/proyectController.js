@@ -409,9 +409,8 @@ function saveProyect(req, res) {
     if('COLLABORATOR' == rol || 'ADVISER' == rol){
         res.status(500).send({message: 'No tienes permiso'});
     }else{
-        if (params._id && params.corelativeNumber && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status) {
+        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status) {
             proyect._id = params._id;
-            proyect.corelativeNumber = params.corelativeNumber;
             proyect.responsability = params.responsability;
             proyect.priorityDocument = params.priorityDocument;
             proyect.priorityToday = params.priorityToday;
