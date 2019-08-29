@@ -291,13 +291,14 @@ function saveModule(req, res) {
     var modules = new Module();
     var rol = req.params.rol;
 
-    if('ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
-        if('ADMIN' == rol){
-            company.status = 'ACCEPTED';
-        }else{
-            company.status = 'REVIEW'
+    if ('ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+        console.log(res)
+    } else {
+        if ('ADMIN' == rol) {
+            modules.status = 'ACCEPTED';
+        } else {
+            modules.status = 'REVIEW'
         }
         if (params.name && params.description) {
             modules.name = params.name;
@@ -329,11 +330,11 @@ function saveModule(req, res) {
 function listModule(req, res) {
     var saus = req.params.rol;
 
-    Module.find({status: saus}, (err, modules) => {
+    Module.find({ status: saus }, (err, modules) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send(modules);
+            res.status(200).send({ modules});
         }
     });
 }
@@ -341,11 +342,11 @@ function listModule(req, res) {
 function searchModule(req, res) {
     var moduleId = req.params.id;
 
-    Module.findOne({name: moduleId}, (err, module) => {
+    Module.findOne({ name: moduleId }, (err, module) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({module});
+            res.status(200).send({ module });
         }
     });
 }
