@@ -24,9 +24,13 @@ api.put('/updateModule/:id', proyectController.updateModule);
 api.put('/deleteModule/:id', proyectController.deleteModule);
 api.post('/saveProyect/:rol', proyectController.saveProyect);
 api.get('/listProyect', proyectController.listProyect);
+api.post('/searchProyect/:id', proyectController.searchProyect);
 api.put('/updateProyect/:id', proyectController.updateProyect);
 api.put('/deleteProyect/:id', proyectController.deleteProyect);
 api.get('/listUser', proyectController.listUser);
 api.post('/searchUser/:id',proyectController.searchUser);
+api.post('/saveSimpleTask/:rol', proyectController.saveSimpleTask);
+api.get('/listSimpleTask/:rol', proyectController.listSimpleTask);
+api.post('/searchSimpleTask/:id', proyectController.searchSimpleTask);
 
 module.exports = api;

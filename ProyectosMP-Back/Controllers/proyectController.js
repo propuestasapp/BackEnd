@@ -9,6 +9,7 @@ var Module = require('../models/module');
 var Proyect = require('../models/proyect');
 var User = require('../models/user');
 var Country = require('../models/country');
+var SimpleTask = require('../models/simpleTask');
 
 /******************************************** COUNTRY ****************************************************/
 function saveCountry(req, res) {
@@ -456,6 +457,18 @@ function listProyect(req, res) {
     });
 }
 
+function searchProyect(req, res) {
+    var proyectId = req.params.id;
+
+    Proyect.find({ _id: proyectId }, (err, proyect) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            res.status(200).send(proyect);
+        }
+    });
+}
+
 function updateProyect(req, res) {
     var params = req.body;
     var proyectId = req.params.id;
@@ -485,6 +498,106 @@ function deleteProyect(req, res) {
     });
 }
 
+/*********************************************** SIMPLE TASK ***********************************************/
+function saveSimpleTask(req, res) {
+    var params = req.body;
+    var simpleTask = new SimpleTask();
+    var rol = req.params.rol;
+
+    if ('ADVISER' == rol) {
+        res.status(200).send({ message: 'No tienes permiso' });
+    } else {
+        if (params.type && params.description && params.priority && params.state && params.estimatedHours && params.dependences && params.planningDate && params.percent && params.comments && params.closedDate) {
+            simpleTask.type = params.type;
+            simpleTask.description = params.description;
+            simpleTask.priority = params.priority;
+            simpleTask.state = params.state;
+            simpleTask.estimatedHours = params.estimatedHours;
+            simpleTask.dependences = params.dependences;
+            simpleTask.planningDate = params.planningDate;
+            simpleTask.percent = params.percent;
+            simpleTask.comments = params.comments;
+            simpleTask.closedDate = params.closedDate;
+            
+            simpleTask.save((err, simpleTaskSave) => {
+                if (err) {
+                    res.status(500).send({ message: 'Error al guardar' });
+                } else {
+                    if (!simpleTaskSave) {
+                        res.status(404).send({ message: 'No se pudo guardar' });
+                    } else {
+                        res.status(200).send({ simpleTask: simpleTaskSave });
+                    }
+                }
+            });
+        } else {
+            res.status(200).send({ message: 'Ingrese todos los campos' });
+        }
+    }
+}
+
+function listSimpleTask(req, res) {
+    var stat = req.params.rol;
+
+    SimpleTask.find({state: stat}, (err, found) => {
+       if(err){
+           res.status(200).send({message: 'Error al listar'});
+       }else{
+           if(!found){
+               res.status(200).send({message: 'No se encontro nada'});
+           }else{
+               res.status(200).send({simpleTasks: found})
+           }
+       }
+    });
+}
+
+function searchSimpleTask(req, res) {
+    var simpleTaskId = req.params.id;
+
+    SimpleTask.findOne({ _id: simpleTaskId }, (err, simpleTask) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            res.status(200).send({ simpleTask });
+        }
+    });
+}
+
+function updateSimpleTask(req, res) {
+    var params = req.body;
+    var simpleTaskId = req.params.id;
+
+    SimpleTask.findByIdAndUpdate(simpleTaskId, params, { new: true }, (err, simpleTaskUpdate) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al actualizar' });
+        } else {
+            if (!simpleTaskUpdate) {
+                res.status(404).send({ message: 'No se pudo actualizar' });
+            } else {
+                res.status(200).send({ simpleTaskUpdate });
+            }
+        }
+    });
+}
+
+function deleteSimpleTask(req, res) {
+    var simpleTaskId = req.params.id;
+
+    SimpleTask.findByIdAndDelete(simpleTaskId, (err, simpleTaskDelete) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al eliminar' });
+        } else {
+            if (!simpleTaskDelete) {
+                res.status(404).send({ message: 'Error al eliminar' });
+            } else {
+                res.status(200).send({ message: 'Se elimino correctamente' });
+            }
+
+        }
+    });
+}
+
 module.exports = {
     saveCountry,
     listCountry,
@@ -506,8 +619,14 @@ module.exports = {
     deleteModule,
     saveProyect,
     listProyect,
+    searchProyect,
     updateProyect,
     deleteProyect,
     listUser,
-    searchUser
+    searchUser,
+    saveSimpleTask,
+    listSimpleTask,
+    searchSimpleTask,
+    updateSimpleTask,
+    deleteSimpleTask
 }
