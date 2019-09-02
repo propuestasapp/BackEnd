@@ -32,5 +32,7 @@ api.post('/searchUser/:id',proyectController.searchUser);
 api.post('/saveSimpleTask/:rol', proyectController.saveSimpleTask);
 api.get('/listSimpleTask/:rol', proyectController.listSimpleTask);
 api.post('/searchSimpleTask/:id', proyectController.searchSimpleTask);
+api.put('/updateSimpleTask/:id', proyectController.updateSimpleTask);
+api.put('/deleteSimpleTask/:id', proyectController.deleteSimpleTask);
 
 module.exports = api;
