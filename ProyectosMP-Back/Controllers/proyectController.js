@@ -537,16 +537,15 @@ function saveSimpleTask(req, res) {
 }
 
 function listSimpleTask(req, res) {
-    var stat = req.params.rol;
 
-    SimpleTask.find({state: stat}, (err, found) => {
+    SimpleTask.find((err, found) => {
        if(err){
            res.status(200).send({message: 'Error al listar'});
        }else{
            if(!found){
                res.status(200).send({message: 'No se encontro nada'});
            }else{
-               res.status(200).send({simpleTasks: found})
+               res.status(200).send(found)
            }
        }
     });
@@ -555,11 +554,11 @@ function listSimpleTask(req, res) {
 function searchSimpleTask(req, res) {
     var simpleTaskId = req.params.id;
 
-    SimpleTask.findOne({ _id: simpleTaskId }, (err, simpleTask) => {
+    SimpleTask.find({ _id: simpleTaskId }, (err, simpleTask) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ simpleTask });
+            res.status(200).send(simpleTask);
         }
     });
 }
@@ -575,7 +574,7 @@ function updateSimpleTask(req, res) {
             if (!simpleTaskUpdate) {
                 res.status(404).send({ message: 'No se pudo actualizar' });
             } else {
-                res.status(200).send({ simpleTaskUpdate });
+                res.status(200).send(simpleTaskUpdate);
             }
         }
     });
