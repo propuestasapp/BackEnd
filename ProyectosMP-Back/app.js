@@ -16,10 +16,12 @@ app.use((req, res, next) => {
 });
 
 var proyect_router = require('./routes/proyectRouter');
+var equipProject_router = require('./routes/sizingRouter');
 
 app.use(bodyParse.urlencoded({extended: false}));
 app.use(bodyParse.json());
 
 app.use('/v1', proyect_router);
+app.use('/v1', equipProject_router);
 
 module.exports = app;
