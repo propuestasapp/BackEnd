@@ -450,9 +450,13 @@ function saveProyect(req, res) {
 function listProyect(req, res) {
     Proyect.find((err, proyects) => {
         if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
+            res.status(404).send({ message: 'Error al listar' });
         } else {
-            res.status(200).send(proyects);
+            if(!proyects){
+                res.status(200).send({ message: 'No se pudo listar' })
+            }else{
+                res.status(200).send(proyects);
+            }
         }
     });
 }

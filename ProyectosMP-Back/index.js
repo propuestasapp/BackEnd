@@ -3,6 +3,7 @@
   var app = require('./app');
   var port = process.env.port || 3789;
   var proyectController = require('./Controllers/proyectController');
+  //var mensaje = require('./nodemailer/configMessage')
 
   mongoose.Promise = global.Promise;
 
@@ -10,6 +11,7 @@
   .then((err, res)=>{
       console.log('Conexion a la base de datos realizada correctamente');
     proyectController.saveCountry();
+    // mensaje();
       app.listen(port,()=>{
         console.log('El servidor de node y express estan conectados');
       });
