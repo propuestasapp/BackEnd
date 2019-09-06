@@ -301,9 +301,11 @@ function saveModule(req, res) {
         } else {
             modules.status = 'REVIEW'
         }
-        if (params.name && params.description) {
+        if (params.name && params.description && params.months && params.keys) {
             modules.name = params.name;
             modules.description = params.description;
+            modules.months  =  params.months;
+            modules.keys = params.keys;
 
             Module.findOne({ name: modules.name }, (err, found) => {
                 if (found) {
