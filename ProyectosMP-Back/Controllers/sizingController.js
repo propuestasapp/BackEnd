@@ -6,8 +6,6 @@ var EquipmentProjection = require('../models/equipmentProjection');
 function saveEquipmentProjection(req, res){
     var equipmentProjection = new EquipmentProjection();
     var params = req.body;
-    var num = [];
-    var str = ''
 
     if(params.transacPeak && params.increase && params.o8PHI && params.trxsCore && params.trxsSeg && params.coresSrv && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.multiplier){
         equipmentProjection.transacPeak = params.transacPeak;
@@ -30,30 +28,18 @@ function saveEquipmentProjection(req, res){
         equipmentProjection.percentageOccupation = params.percentageOccupation;
         equipmentProjection.onlineHistory = params.onlineHistory;
         equipmentProjection.keys = params.keys;
-        
-        str = (equipmentProjection.transSecond/params.trxsCore)
-        num = str.toString().split('.')
-        console.log(num[0]/4)
-        console.log(num[0]%4)
-        if((num[0]%4)>0){
-            str = num[0]/4
-            num = str.toString().split('.')
-            console.log()
-        }else{
-            console.log()
-        }
 
-        // equipmentProjection.save((err, saveCorrect) => {
-        //     if(err){
-        //         res.status(500).send({message: "Error al guardar"});
-        //     }else{
-        //         if(!saveCorrect){
-        //             res.status(404).send({message: 'No se puede guardar'});
-        //         }else{
-        //             res.status(200).send({equipmentProjection: saveCorrect})
-        //         }
-        //     }
-        // })
+        equipmentProjection.save((err, saveCorrect) => {
+            if(err){
+                res.status(500).send({message: "Error al guardar"});
+            }else{
+                if(!saveCorrect){
+                    res.status(404).send({message: 'No se puede guardar'});
+                }else{
+                    res.status(200).send({equipmentProjection: saveCorrect})
+                }
+            }
+        })
     }
 }
 
