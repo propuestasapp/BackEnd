@@ -9,15 +9,15 @@ function saveEquipmentProjection(req, res){
 
     if(params.transacPeak && params.increase && params.o8PHI && params.trxsCore && params.trxsSeg && params.coresSrv && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.multiplier){
         equipmentProjection.transacPeak = params.transacPeak;
-        equipmentProjection.projecTrans = equipmentProjection.transacPeak+((params.transacPeak*params.increase)/100);
-        equipmentProjection.avgTrans = (equipmentProjection.projecTrans*params.o8PHI)/100;
-        equipmentProjection.transHour = equipmentProjection.projecTrans/10;
-        equipmentProjection.transMinute = (equipmentProjection.transHour/45).toFixed();
-        equipmentProjection.transSecond = (equipmentProjection.transMinute/45).toFixed();
-        equipmentProjection.parallelTrans = (equipmentProjection.transSecond/params.trxsCore).toFixed();
-        equipmentProjection.coresAnalysis = (equipmentProjection.transSecond/params.trxsSeg).toFixed(6);
-        equipmentProjection.numberServers = (equipmentProjection.coresAnalysis/params.coresSrv).toFixed();
-        equipmentProjection.recordsKey = equipmentProjection.projecTrans*params.multiplier;
+        equipmentProjection.projecTrans = params.projecTrans;
+        equipmentProjection.avgTrans = params.avgTrans;
+        equipmentProjection.transHour = params.transHour;
+        equipmentProjection.transMinute = params.transMinute;
+        equipmentProjection.transSecond = params.transSecond;
+        equipmentProjection.parallelTrans = params.parallelTrans;
+        equipmentProjection.coresAnalysis = params.coresAnalysis;
+        equipmentProjection.numberServers = params.numberServers;
+        equipmentProjection.recordsKey = params.recordsKey;
         equipmentProjection.increase = params.increase;
         equipmentProjection.o8PHI = params.o8PHI;
         equipmentProjection.trxsCore = params.trxsCore;
@@ -28,6 +28,22 @@ function saveEquipmentProjection(req, res){
         equipmentProjection.percentageOccupation = params.percentageOccupation;
         equipmentProjection.onlineHistory = params.onlineHistory;
         equipmentProjection.keys = params.keys;
+        equipmentProjection._id = params._id;
+        equipmentProjection.hours = params.hours;
+        equipmentProjection.minutes = params.minutes;
+        equipmentProjection.seconds = params.seconds;
+        equipmentProjection.coresDB = params.coresDB;
+        equipmentProjection.numMemory = params.numMemory;
+        equipmentProjection.memoryDB = params.memoryDB;
+        equipmentProjection.datamart = params.datamart;
+        equipmentProjection.history = params.history;
+        equipmentProjection.temp = params.temp;
+        equipmentProjection.logs = params.logs;
+        equipmentProjection.total = params.total;
+        equipmentProjection.coresServer = params.coresServer;
+        equipmentProjection.memoryServer = params.memoryServer;
+        equipmentProjection.coresAlert = params.coresAlert;
+        equipmentProjection.memoryAlert = params.memoryAlert;
 
         equipmentProjection.save((err, saveCorrect) => {
             if(err){
@@ -63,7 +79,7 @@ function searchEquipmentProjection(req, res) {
 
     EquipmentProjection.find({ _id: equipmentProjectionId }, (err, equipmentProjection) => {
         if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
+            res.status(404).send({ message: 'No existe' });
         } else {
             res.status(200).send(equipmentProjection);
         }

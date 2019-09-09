@@ -4,13 +4,18 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var equipmentProjectionSchema = Schema({
+    _id: {type: Schema.ObjectId, ref: 'module'},
+    modules: [],
     transacPeak: Number,
     increase: Number,
     projecTrans: Number,
     o8PHI: Number,
     avgTrans: Number,
+    hours: Number,
     transHour: Number,
+    minutes: Number,
     transMinute: Number,
+    seconds: Number,
     transSecond: Number,
     trxsCore: Number,
     parallelTrans: Number,
@@ -22,7 +27,19 @@ var equipmentProjectionSchema = Schema({
     percentageOccupation: Number,
     onlineHistory: Number,
     keys: Number,
-    recordsKey: Number
+    recordsKey: Number,
+    coresDB: Number,
+    numMemory: Number,
+    memoryDB: Number,
+    datamart: Number,
+    history: Number,
+    temp: Number,
+    logs: Number,
+    total: Number,
+    coresServer: Number,
+    memoryServer: Number,
+    coresAlert: Number,
+    memoryAlert: Number
 })
 
 module.exports = mongoose.model('equipmentProjection', equipmentProjectionSchema);
