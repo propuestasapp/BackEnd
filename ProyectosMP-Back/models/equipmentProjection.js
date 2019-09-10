@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var equipmentProjectionSchema = Schema({
     _id: String,
-    module: String,
+    modul: String,
     transacPeak: Number,
     increase: Number,
     projecTrans: Number,
@@ -31,6 +31,7 @@ var equipmentProjectionSchema = Schema({
     coresDB: Number,
     numMemory: Number,
     memoryDB: Number,
+    multiMemoryDB: Number,
     datamart: Number,
     history: Number,
     temp: Number,

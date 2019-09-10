@@ -6,8 +6,8 @@ var api = express.Router();
 
 api.post('/saveEquipProject', sizingController.saveEquipmentProjection);
 api.get('/listEquipProject', sizingController.listEquipmentProjection);
-api.post('/searchEquipProject/:id', sizingController.searchEquipmentProjection);
-api.put('/updateEquipProject/:id', sizingController.updateEquipmentProjection);
+api.post('/searchEquipProject/:id/:mod', sizingController.searchEquipmentProjection);
+api.put('/updateEquipProject/:id/:mod', sizingController.updateEquipmentProjection);
 api.put('/deleteEquipProject/:id', sizingController.deleteEquipmentProjection);
 
 module.exports = api;

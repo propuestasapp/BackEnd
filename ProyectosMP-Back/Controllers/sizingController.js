@@ -1,6 +1,7 @@
 'use strict';
 
 var EquipmentProjection = require('../models/equipmentProjection');
+var Sizing = require('../models/sizing');
 
 /************************************** EQUIPMENT PROJECTION *****************************************/
 function saveEquipmentProjection(req, res){
@@ -29,7 +30,7 @@ function saveEquipmentProjection(req, res){
         equipmentProjection.onlineHistory = params.onlineHistory;
         equipmentProjection.keys = params.keys;
         equipmentProjection._id = params._id;
-        equipmentProjection.module = params.module
+        equipmentProjection.modul = params.modul
         equipmentProjection.hours = params.hours;
         equipmentProjection.minutes = params.minutes;
         equipmentProjection.seconds = params.seconds;
@@ -45,6 +46,7 @@ function saveEquipmentProjection(req, res){
         equipmentProjection.memoryServer = params.memoryServer;
         equipmentProjection.coresAlert = params.coresAlert;
         equipmentProjection.memoryAlert = params.memoryAlert;
+        equipmentProjection.mulMemoryDB = params.mulMemoryDB;
 
         equipmentProjection.save((err, saveCorrect) => {
             if(err){
@@ -77,12 +79,17 @@ function listEquipmentProjection(req, res) {
 
 function searchEquipmentProjection(req, res) {
     var equipmentProjectionId = req.params.id;
+    var mod = req.params.mod;
 
-    EquipmentProjection.find({ _id: equipmentProjectionId }, (err, equipmentProjection) => {
+    EquipmentProjection.find({ _id: equipmentProjectionId,  modul: mod}, (err, equipmentProjection) => {
         if (err) {
-            res.status(404).send({ message: 'No existe' });
+            res.status(404).send({ message: 'No se puedo buscar' });
         } else {
-            res.status(200).send(equipmentProjection);
+            if(!equipmentProjection){
+                res.status(200).send({message: 'No existe'});
+            }else{
+                res.status(200).send(equipmentProjection);
+            }
         }
     });
 }
@@ -90,15 +97,26 @@ function searchEquipmentProjection(req, res) {
 function updateEquipmentProjection(req, res) {
     var params = req.body;
     var equipmentProjectionId = req.params.id;
+    var mod = req.params.mod;
 
-    EquipmentProjection.findByIdAndUpdate(equipmentProjectionId, params, { new: true }, (err, equipmentProjectionUpdate) => {
+    EquipmentProjection.find({ _id: equipmentProjectionId,  modul: mod}, (err, equipmentProjection) => {
         if (err) {
-            res.status(500).send({ message: 'Error al actualizar' });
+            res.status(404).send({ message: 'No se puedo buscar' });
         } else {
-            if (!equipmentProjectionUpdate) {
-                res.status(404).send({ message: 'No se pudo actualizar' });
-            } else {
-                res.status(200).send(equipmentProjectionUpdate);
+            if(!equipmentProjection){
+                res.status(200).send({message: 'No existe'});
+            }else{
+                EquipmentProjection.findByIdAndUpdate(equipmentProjection[0]._id, params, { new: true }, (err, equipmentProjectionUpdate) => {
+                    if (err) {
+                        res.status(500).send({ message: 'Error al actualizar' });
+                    } else {
+                        if (!equipmentProjectionUpdate) {
+                            res.status(404).send({ message: 'No se pudo actualizar' });
+                        } else {
+                            res.status(200).send(equipmentProjectionUpdate);
+                        }
+                    }
+                });
             }
         }
     });
@@ -119,6 +137,15 @@ function deleteEquipmentProjection(req, res) {
 
         }
     });
+}
+
+function saveSizing(req, res){
+    var sizing = new Sizing();
+    var params = req.body.params;
+
+    if(params._id && params.cores){
+
+    }
 }
 
 module.exports = {
