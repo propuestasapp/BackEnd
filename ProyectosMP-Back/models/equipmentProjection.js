@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var equipmentProjectionSchema = Schema({
-    _id: {type: Schema.ObjectId, ref: 'module'},
-    modules: [],
+    _id: String,
+    module: String,
     transacPeak: Number,
     increase: Number,
     projecTrans: Number,

@@ -29,6 +29,7 @@ function saveEquipmentProjection(req, res){
         equipmentProjection.onlineHistory = params.onlineHistory;
         equipmentProjection.keys = params.keys;
         equipmentProjection._id = params._id;
+        equipmentProjection.module = params.module
         equipmentProjection.hours = params.hours;
         equipmentProjection.minutes = params.minutes;
         equipmentProjection.seconds = params.seconds;
