@@ -9,5 +9,10 @@ api.get('/listEquipProject', sizingController.listEquipmentProjection);
 api.post('/searchEquipProject/:id/:mod', sizingController.searchEquipmentProjection);
 api.put('/updateEquipProject/:id/:mod', sizingController.updateEquipmentProjection);
 api.put('/deleteEquipProject/:id', sizingController.deleteEquipmentProjection);
+api.post('/saveSizing', sizingController.saveSizing);
+api.get('/listSizing', sizingController.listSizing);
+api.post('/searchSizing/:id', sizingController.searchSizing);
+api.put('/updateSizing/:id', sizingController.updateSizing);
+api.put('/deleteSizing/:id', sizingController.deleteSizing);
 
 module.exports = api;

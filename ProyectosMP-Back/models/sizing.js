@@ -1,23 +1,26 @@
 'use strict';
 
 var mongoose = require('../node_modules/mongoose');
-var Schema = moongose.Schema;
+var Schema = mongoose.Schema;
 
 var sizingSchema = Schema({
-    _id: String,
+    _id: Number,
+    trxPeak: Number,
     coresDB: Number,
-    numMemory: Number,
-    memoryDB: Number,
     multiMemoryDB: Number,
+    memoryDB: Number,
     datamart: Number,
     history: Number,
     temp: Number,
     logs: Number,
     total: Number,
+    coresSrv: Number,
+    numberServers: Number,
     coresServer: Number,
     memoryServer: Number,
     coresAlert: Number,
-    memoryAlert: Number
+    memoryAlert: Number,
+    version: String
 })
 
 module.exports = mongoose.model('sizing', sizingSchema);

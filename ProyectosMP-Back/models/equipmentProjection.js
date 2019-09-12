@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var equipmentProjectionSchema = Schema({
-    _id: String,
+    equipProject: String,
     modul: String,
     transacPeak: Number,
     increase: Number,
@@ -21,26 +21,19 @@ var equipmentProjectionSchema = Schema({
     parallelTrans: Number,
     trxsSeg: Number,
     coresAnalysis: Number,
-    coresSrv: Number,
-    numberServers: Number,
     recordLength: Number,
     percentageOccupation: Number,
     onlineHistory: Number,
     keys: Number,
     recordsKey: Number,
+    multiplier: Number,
     coresDB: Number,
-    numMemory: Number,
-    memoryDB: Number,
     multiMemoryDB: Number,
+    memoryDB: Number,
     datamart: Number,
     history: Number,
-    temp: Number,
-    logs: Number,
     total: Number,
-    coresServer: Number,
-    memoryServer: Number,
-    coresAlert: Number,
-    memoryAlert: Number
+    coresServer: Number
 })
 
 module.exports = mongoose.model('equipmentProjection', equipmentProjectionSchema);
