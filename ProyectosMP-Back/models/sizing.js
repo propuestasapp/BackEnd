@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var sizingSchema = Schema({
     _id: Number,
+    proyect: String,
     trxPeak: Number,
     coresDB: Number,
     multiMemoryDB: Number,

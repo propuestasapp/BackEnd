@@ -138,8 +138,9 @@ function saveSizing(req, res){
     var sizing = new Sizing();
     var params = req.body;
 
-    if(params._id && params.trxPeak && params.coresDB && params.multiMemoryDB && params.memoryDB && params.datamart && params.history && params.temp && params.logs && params.total && params.coresSrv && params.numberServers && params.coresServer && params.memoryServer && params.coresAlert && params.memoryAlert){
+    if(params._id && params.proyect && params.trxPeak && params.coresDB && params.multiMemoryDB && params.memoryDB && params.datamart && params.history && params.temp && params.logs && params.total && params.coresSrv && params.numberServers && params.coresServer && params.memoryServer && params.coresAlert && params.memoryAlert && params.version){
         sizing._id = params._id;
+        sizing.proyect = params.proyect;
         sizing.trxPeak = params.trxPeak;
         sizing.coresDB = params.coresDB;
         sizing.multiMemoryDB = params.multiMemoryDB;
@@ -155,6 +156,7 @@ function saveSizing(req, res){
         sizing.memoryServer = params.memoryServer;
         sizing.coresAlert = params.coresAlert;
         sizing.memoryAlert = params.memoryAlert;
+        sizing.version = params.version;
 
         sizing.save((err, saveCorrect) => {
             if(err){
