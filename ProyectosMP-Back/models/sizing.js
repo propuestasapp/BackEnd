@@ -8,7 +8,6 @@ var sizingSchema = Schema({
     proyect: String,
     trxPeak: Number,
     coresDB: Number,
-    multiMemoryDB: Number,
     memoryDB: Number,
     datamart: Number,
     history: Number,
