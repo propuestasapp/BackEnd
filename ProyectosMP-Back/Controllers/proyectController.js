@@ -48,20 +48,20 @@ function updateCountry(req, res) {
     var newYear = req.params.newYear;
     var auto;
 
-    if('COLLABORATOR' == rol || 'ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
+    if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+    } else {
         Country.find((err, countries) => {
-            if(newYear == 1){
+            if (newYear == 1) {
                 auto = 0;
-            }else{
+            } else {
                 auto = countries[1].number
             }
-            Country.findByIdAndUpdate(countries[1]._id, {number: auto+1}, {new: true}, (err, update) => {
-                if(err){
-                    res.status(200).send({message: 'Error al actualizar'});
-                }else{
-                    res.status(200).send({message: 'Se incremento correctamente'});
+            Country.findByIdAndUpdate(countries[1]._id, { number: auto + 1 }, { new: true }, (err, update) => {
+                if (err) {
+                    res.status(200).send({ message: 'Error al actualizar' });
+                } else {
+                    res.status(200).send({ message: 'Se incremento correctamente' });
                 }
             });
         });
@@ -179,7 +179,7 @@ function login(req, res) {
             bcrypt.compare(params.password, user.password, (err, check) => {
                 if (check) {
                     // console.log(jwt.createToken(user))
-                    res.status(200).send({ token: jwt.createToken(user), user: user});
+                    res.status(200).send({ token: jwt.createToken(user), user: user });
                 } else {
                     res.status(200).send({ message: 'Error en tu contrasena' });
                 }
@@ -193,12 +193,12 @@ function saveCompany(req, res) {
     var company = new Company();
     var rol = req.params.rol;
 
-    if('ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
-        if('ADMIN' == rol){
+    if ('ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+    } else {
+        if ('ADMIN' == rol) {
             company.status = 'ACCEPTED';
-        }else{
+        } else {
             company.status = 'REVIEW'
         }
         if (params.name && params.description && params.country) {
@@ -208,7 +208,7 @@ function saveCompany(req, res) {
 
             Company.findOne({ name: company.name, country: company.country }, (errr, found) => {
                 if (found) {
-                    res.status(200).send({ message: "Ya esta registrada"});
+                    res.status(200).send({ message: "Ya esta registrada" });
                 } else {
                     company.save((err, companySave) => {
                         if (err) {
@@ -232,11 +232,11 @@ function saveCompany(req, res) {
 function listCompany(req, res) {
     var saus = req.params.rol;
 
-    Company.find({status: saus}, (err, companies) => {
+    Company.find({ status: saus }, (err, companies) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({companies: companies, rol: req.user});
+            res.status(200).send({ companies: companies, rol: req.user });
         }
     });
 }
@@ -244,7 +244,7 @@ function listCompany(req, res) {
 function searchCompany(req, res) {
     var companyId = req.params.id;
 
-    Company.findOne({ _id: companyId}, (err, company) => {
+    Company.findOne({ _id: companyId }, (err, company) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
@@ -304,7 +304,7 @@ function saveModule(req, res) {
         if (params.name && params.description && params.months && params.keys) {
             modules.name = params.name;
             modules.description = params.description;
-            modules.months  =  params.months;
+            modules.months = params.months;
             modules.keys = params.keys;
 
             Module.findOne({ name: modules.name }, (err, found) => {
@@ -333,16 +333,52 @@ function saveModule(req, res) {
 function listModule(req, res) {
     var stat = req.params.rol;
 
-    Module.find({status: stat}, (err, found) => {
-       if(err){
-           res.status(200).send({message: 'Error al listar'});
-       }else{
-           if(!found){
-               res.status(200).send({message: 'No se encontro nada'});
-           }else{
-               res.status(200).send({modules: found})
-           }
-       }
+    Module.find({ status: stat }, (err, found) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al listar' });
+        } else {
+            if (!found) {
+                res.status(200).send({ message: 'No se encontro nada' });
+            } else {
+                res.status(200).send({ modules: found })
+            }
+        }
+    });
+}
+
+function listModule2(req, res) {
+    var stat = req.params.rol;
+
+    Module.find({ status: 'REVIEW' }, (err, found) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al listar' });
+        } else {
+            if (!found) {
+                Module.find((err, all) => {
+                    if (err) {
+                        res.status(200).send({ message: 'Error al listar' });
+                    } else {
+                        if (!all) {
+                            res.status(200).send({ message: 'No se encontro nada' });
+                        } else {
+                            res.status(200).send([all])
+                        }
+                    }
+                });
+            } else {
+                Module.find({ status: stat },(err, list) => {
+                    if (err) {
+                        res.status(200).send({ message: 'Error al listar' });
+                    } else {
+                        if (!list) {
+                            res.status(200).send({ message: 'No se encontro nada' });
+                        } else {
+                            res.status(200).send([list])
+                        }
+                    }
+                });
+            }
+        }
     });
 }
 
@@ -409,9 +445,9 @@ function saveProyect(req, res) {
     var proyect = new Proyect();
     var rol = req.params.rol;
 
-    if('COLLABORATOR' == rol || 'ADVISER' == rol){
-        res.status(500).send({message: 'No tienes permiso'});
-    }else{
+    if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
+        res.status(500).send({ message: 'No tienes permiso' });
+    } else {
         if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status) {
             proyect._id = params._id;
             proyect.responsability = params.responsability;
@@ -454,9 +490,9 @@ function listProyect(req, res) {
         if (err) {
             res.status(404).send({ message: 'Error al listar' });
         } else {
-            if(!proyects){
+            if (!proyects) {
                 res.status(200).send({ message: 'No se pudo listar' })
-            }else{
+            } else {
                 res.status(200).send(proyects);
             }
         }
@@ -524,7 +560,7 @@ function saveSimpleTask(req, res) {
             simpleTask.percent = params.percent;
             simpleTask.comments = params.comments;
             simpleTask.closedDate = params.closedDate;
-            
+
             simpleTask.save((err, simpleTaskSave) => {
                 if (err) {
                     res.status(500).send({ message: 'Error al guardar' });
@@ -545,15 +581,15 @@ function saveSimpleTask(req, res) {
 function listSimpleTask(req, res) {
 
     SimpleTask.find((err, found) => {
-       if(err){
-           res.status(200).send({message: 'Error al listar'});
-       }else{
-           if(!found){
-               res.status(200).send({message: 'No se encontro nada'});
-           }else{
-               res.status(200).send(found)
-           }
-       }
+        if (err) {
+            res.status(200).send({ message: 'Error al listar' });
+        } else {
+            if (!found) {
+                res.status(200).send({ message: 'No se encontro nada' });
+            } else {
+                res.status(200).send(found)
+            }
+        }
     });
 }
 
@@ -618,6 +654,7 @@ module.exports = {
     deleteCompany,
     saveModule,
     listModule,
+    listModule2,
     searchModuleName,
     searchModuleId,
     updateModule,

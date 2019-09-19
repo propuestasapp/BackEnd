@@ -18,6 +18,7 @@ api.put('/updateCompany/:id', proyectController.updateCompany);
 api.put('/deleteCompany/:id', proyectController.deleteCompany);
 api.post('/saveModule/:rol', proyectController.saveModule);
 api.get('/listModule/:rol', proyectController.listModule);
+api.get('/listModule2/:rol', proyectController.listModule2);
 api.post('/searchModuleName/:id', proyectController.searchModuleName);
 api.post('/searchModuleId/:id', proyectController.searchModuleId);
 api.put('/updateModule/:id', proyectController.updateModule);
