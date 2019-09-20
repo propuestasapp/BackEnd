@@ -10,7 +10,7 @@ var proyectSchema = Schema({
     priorityToday: Number,
     company: String,
     country: String,
-    module: [{type: Schema.ObjectId, ref: 'module'}],
+    module: [{ type: Schema.ObjectId, ref: 'module' }],
     dateRequest: Date,
     dateStart: Date,
     whoAskFor: String,

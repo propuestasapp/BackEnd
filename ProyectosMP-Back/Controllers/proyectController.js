@@ -366,7 +366,7 @@ function listModule2(req, res) {
                     }
                 });
             } else {
-                Module.find({ status: stat },(err, list) => {
+                Module.find({ status: stat }, (err, list) => {
                     if (err) {
                         res.status(200).send({ message: 'Error al listar' });
                     } else {
@@ -467,6 +467,7 @@ function saveProyect(req, res) {
             proyect.description = params.description;
             proyect.status = params.status;
             proyect.countersStatus = params.status;
+
             proyect.save((err, proyectSave) => {
                 if (err) {
                     res.status(200).send({ message: 'Error al guardar' });
@@ -483,6 +484,23 @@ function saveProyect(req, res) {
             res.status(200).send({ message: 'Ingrese todos los campos' });
         }
     }
+}
+
+function saveFile(req, res) {
+    var EDFile = req.files.file;
+    var proyectId = req.params.id;
+
+    Proyect.findOne({ _id: proyectId }, (err, proyect) => {
+        if (err) {
+            res.status(404).send({ message: 'No se pudo listar' });
+        } else {
+            EDFile.mv(`./files/${proyectId}.${EDFile.name}`, err => {
+                if (err) return res.status(200).send({ message: err })
+        
+                return res.status(200).send({ message: 'File upload' })
+            })
+        }
+    });
 }
 
 function listProyect(req, res) {
@@ -660,6 +678,7 @@ module.exports = {
     updateModule,
     deleteModule,
     saveProyect,
+    saveFile,
     listProyect,
     searchProyect,
     updateProyect,

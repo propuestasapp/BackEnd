@@ -2,8 +2,12 @@
 
 var express = require('express');
 var bodyParse = require('body-parser');
+var fileUpload = require('express-fileupload')
 
 var app = express();
+// app.use(fileUpload({
+//     createParentPath: true
+// }));
 
 //CORS
 app.use((req, res, next) => {
@@ -20,6 +24,7 @@ var equipProject_router = require('./routes/sizingRouter');
 
 app.use(bodyParse.urlencoded({extended: false}));
 app.use(bodyParse.json());
+app.use(fileUpload())
 
 app.use('/v1', proyect_router);
 app.use('/v1', equipProject_router);

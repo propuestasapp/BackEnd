@@ -24,6 +24,7 @@ api.post('/searchModuleId/:id', proyectController.searchModuleId);
 api.put('/updateModule/:id', proyectController.updateModule);
 api.put('/deleteModule/:id', proyectController.deleteModule);
 api.post('/saveProyect/:rol', proyectController.saveProyect);
+api.post('/saveFile/:id', proyectController.saveFile);
 api.get('/listProyect', proyectController.listProyect);
 api.post('/searchProyect/:id', proyectController.searchProyect);
 api.put('/updateProyect/:id', proyectController.updateProyect);
