@@ -136,19 +136,39 @@ function searchUser(req, res) {
     });
 }
 
+function searchUserEmail(req, res) {
+    var mail = req.params.mail;
+
+    User.findOne({ email: mail }, (err, user) => {
+        if (err) {
+            res.status(200).send({ message: 'No se pudo buscar' });
+        } else {
+            if (!user) {
+                res.status(200).send({ message: 'No se encontro el email' });
+            } else {
+                res.status(200).send(user);
+            }
+        }
+    });
+}
+
 function updateUser(req, res) {
     var params = req.body;
     var userId = req.params.id;
-    User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
-        if (err) {
-            res.status(200).send({ message: 'Error al actualizar' });
-        } else {
-            if (!update) {
-                res.stats(404).send({ message: 'No se pudo actualizar' });
+
+    bcrypt.hash(params.password, null, null, function (err, hash) {
+        params.password = hash;
+        User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
+            if (err) {
+                res.status(200).send({ message: 'Error al actualizar' });
             } else {
-                res.status(200).send({ user: update });
+                if (!update) {
+                    res.stats(404).send({ message: 'No se pudo actualizar' });
+                } else {
+                    res.status(200).send({ user: update });
+                }
             }
-        }
+        });
     });
 }
 
@@ -487,14 +507,14 @@ function saveProyect(req, res) {
 }
 
 function saveFile(req, res) {
-    var EDFile = req.files.file;
+    var file = req.files.file;
     var proyectId = req.params.id;
 
     Proyect.findOne({ _id: proyectId }, (err, proyect) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            EDFile.mv(`./files/${proyectId}.${EDFile.name}`, err => {
+            file.mv(`./files/${proyectId}.${file.name}`, err => {
                 if (err) return res.status(200).send({ message: err })
         
                 return res.status(200).send({ message: 'File upload' })
@@ -685,6 +705,7 @@ module.exports = {
     deleteProyect,
     listUser,
     searchUser,
+    searchUserEmail,
     saveSimpleTask,
     listSimpleTask,
     searchSimpleTask,
