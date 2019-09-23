@@ -128,7 +128,7 @@ function searchUser(req, res) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
             if (!user) {
-                res.stats(404).send({ message: 'No se pudo listar' });
+                res.status(404).send({ message: 'No se pudo listar' });
             } else {
                 res.status(200).send({ user });
             }
