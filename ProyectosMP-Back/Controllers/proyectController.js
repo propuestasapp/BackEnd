@@ -125,10 +125,10 @@ function searchUser(req, res) {
 
     User.findOne({ _id: userId }, (err, user) => {
         if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
+            res.status(200).send({ message: 'No se pudo listar' });
         } else {
             if (!user) {
-                res.status(404).send({ message: 'No se pudo listar' });
+                res.status(200).send({ message: 'No se pudo listar' });
             } else {
                 res.status(200).send({ user });
             }
