@@ -200,23 +200,19 @@ function listSizing(req, res) {
 }
 
 function searchSizing(req, res) {
-    let params = req.body;
+    var sizingId = req.params.id;
 
-    if (params._id && params.proyect && params.trxPeak && params.coresDB && params.memoryDB && params.datamart && params.history && params.temp && params.logs && params.total && params.coresSrv && params.numberServers && params.coresServer && params.memoryServer && params.coresAlert && params.memoryAlert && params.version) {
-        Sizing.findOne({ proyect: params.proyect, version: params.version }, (err, found) => {
-            if (err) {
-                res.status(200).send({ message: 'Error al buscar' });
+    Sizing.findOne({ _id: sizingId }, (err, found) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al buscar' });
+        } else {
+            if (!found) {
+                res.status(200).send({ message: 'No se encontro nada' });
             } else {
-                if (found) {
-                    res.status(200).send({ message: 'Ya existe' });
-                } else {
-                    res.status(200).send({ message: 'Se puede continuar' })
-                }
+                res.status(200).send([found])
             }
-        })
-    } else {
-        res.status(200).send({ message: 'Ingrese todos los datos' })
-    }
+        }
+    })
 }
 
 function updateSizing(req, res) {

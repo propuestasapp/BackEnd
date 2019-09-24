@@ -4,7 +4,7 @@ var mongoose = require('../node_modules/mongoose');
 var Schema = mongoose.Schema;
 
 var sizingSchema = Schema({
-    _id: Number,
+    _id: String,
     proyect: String,
     trxPeak: Number,
     coresDB: Number,

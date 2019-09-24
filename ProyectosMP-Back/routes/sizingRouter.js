@@ -11,7 +11,7 @@ api.put('/updateEquipProject/:id/:mod', sizingController.updateEquipmentProjecti
 api.put('/deleteEquipProject/:id', sizingController.deleteEquipmentProjection);
 api.post('/saveSizing', sizingController.saveSizing);
 api.get('/listSizing', sizingController.listSizing);
-api.post('/searchSizing', sizingController.searchSizing);
+api.post('/searchSizing/:id', sizingController.searchSizing);
 api.put('/updateSizing/:id', sizingController.updateSizing);
 api.put('/deleteSizing/:id', sizingController.deleteSizing);
 
