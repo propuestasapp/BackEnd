@@ -311,6 +311,9 @@ function saveModule(req, res) {
     var params = req.body;
     var modules = new Module();
     var rol = req.params.rol;
+    var mongoose = require('mongoose');
+    var Schema = mongoose.Schema;
+    var name = "summary"
 
     if ('ADVISER' == rol) {
         res.status(500).send({ message: 'No tienes permiso' });
@@ -338,6 +341,10 @@ function saveModule(req, res) {
                             if (!moduleSave) {
                                 res.status(404).send({ message: 'No se pudo guardar' });
                             } else {
+                                if(params.options.length > 0){
+                                    Module.update({_id: moduleSave._id},{$set: {'options': params.options}})
+                                }
+                                
                                 res.status(200).send({ module: moduleSave });
                             }
                         }
@@ -516,7 +523,7 @@ function saveFile(req, res) {
         } else {
             file.mv(`./files/${proyectId}.${file.name}`, err => {
                 if (err) return res.status(200).send({ message: err })
-        
+
                 return res.status(200).send({ message: 'File upload' })
             })
         }
