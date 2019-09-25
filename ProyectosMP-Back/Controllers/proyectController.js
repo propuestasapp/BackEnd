@@ -329,6 +329,7 @@ function saveModule(req, res) {
             modules.description = params.description;
             modules.months = params.months;
             modules.keys = params.keys;
+            modules.options = params.options
 
             Module.findOne({ name: modules.name }, (err, found) => {
                 if (found) {
@@ -341,8 +342,8 @@ function saveModule(req, res) {
                             if (!moduleSave) {
                                 res.status(404).send({ message: 'No se pudo guardar' });
                             } else {
-                                if(params.options.length > 0){
-                                    Module.update({_id: moduleSave._id},{$set: {'options': params.options}})
+                                if(params.options){
+                                    Module.update({_id: moduleSave._id},{$set: {'options': []}})
                                 }
                                 
                                 res.status(200).send({ module: moduleSave });
@@ -444,6 +445,9 @@ function updateModule(req, res) {
             if (!moduleUpdate) {
                 res.status(404).send({ message: 'No se pudo actualizar' });
             } else {
+                if(params.options){
+                    Module.update({moduleId},{$set: {'options': []}})
+                }
                 res.status(200).send({ moduleUpdate });
             }
         }
