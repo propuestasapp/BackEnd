@@ -342,10 +342,10 @@ function saveModule(req, res) {
                             if (!moduleSave) {
                                 res.status(404).send({ message: 'No se pudo guardar' });
                             } else {
-                                if(params.options){
-                                    Module.update({_id: moduleSave._id},{$set: {'options': []}})
+                                if (params.options) {
+                                    Module.update({ _id: moduleSave._id }, { $set: { 'options': [] } })
                                 }
-                                
+
                                 res.status(200).send({ module: moduleSave });
                             }
                         }
@@ -438,17 +438,59 @@ function updateModule(req, res) {
     var params = req.body;
     var moduleId = req.params.id;
 
-    Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
+    Module.find({ name: params.name }, (err, found) => {
         if (err) {
-            res.status(500).send({ message: 'Error al actualizar' });
+            res.status(200).send({ message: 'Error al buscar' });
         } else {
-            if (!moduleUpdate) {
-                res.status(404).send({ message: 'No se pudo actualizar' });
-            } else {
-                if(params.options){
-                    Module.update({moduleId},{$set: {'options': []}})
+            if (found.length > 0) {
+                if(found.length == 1 && found[0].options.length == params.options.length){
+                    Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
+                        if (err) {
+                            res.status(200).send({ message: 'Error al actualizar' });
+                        } else {
+                            if (!moduleUpdate) {
+                                res.status(200).send({ message: 'No se pudo actualizar' });
+                            } else {
+                                if (params.options) {
+                                    Module.update({ moduleId }, { $set: { 'options': [] } })
+                                }
+                                res.status(200).send([moduleUpdate]);
+                            }
+                        }
+                    });
+                }else{
+                    res.status(200).send({message: 'Ya existe'})
                 }
-                res.status(200).send({ moduleUpdate });
+                
+                // Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
+                //     if (err) {
+                //         res.status(200).send({ message: 'Error al actualizar' });
+                //     } else {
+                //         if (!moduleUpdate) {
+                //             res.status(200).send({ message: 'No se pudo actualizar' });
+                //         } else {
+                //             if (params.options) {
+                //                 Module.update({ moduleId }, { $set: { 'options': [] } })
+                //             }
+                //             res.status(200).send([moduleUpdate]);
+                //         }
+                //     }
+                // });
+            } else {
+                Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
+                    if (err) {
+                        res.status(200).send({ message: 'Error al actualizar' });
+                    } else {
+                        if (!moduleUpdate) {
+                            res.status(200).send({ message: 'No se pudo actualizar' });
+                        } else {
+                            if (params.options) {
+                                Module.update({ moduleId }, { $set: { 'options': [] } })
+                            }
+                            res.status(200).send([moduleUpdate]);
+                        }
+                    }
+                });
             }
         }
     });
