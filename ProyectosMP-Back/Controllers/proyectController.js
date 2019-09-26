@@ -443,39 +443,28 @@ function updateModule(req, res) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
             if (found.length > 0) {
-                if(found.length == 1 && found[0].options.length == params.options.length){
-                    Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
-                        if (err) {
-                            res.status(200).send({ message: 'Error al actualizar' });
-                        } else {
-                            if (!moduleUpdate) {
-                                res.status(200).send({ message: 'No se pudo actualizar' });
+                if (found.length == 1) {
+                    if(moduleId == found[0]._id){
+                        Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
+                            if (err) {
+                                res.status(200).send({ message: 'Error al actualizar' });
                             } else {
-                                if (params.options) {
-                                    Module.update({ moduleId }, { $set: { 'options': [] } })
+                                if (!moduleUpdate) {
+                                    res.status(200).send({ message: 'No se pudo actualizar' });
+                                } else {
+                                    if (params.options) {
+                                        Module.update({ moduleId }, { $set: { 'options': [] } })
+                                    }
+                                    res.status(200).send([moduleUpdate]);
                                 }
-                                res.status(200).send([moduleUpdate]);
                             }
-                        }
-                    });
-                }else{
-                    res.status(200).send({message: 'Ya existe'})
+                        });
+                    }else{
+                        res.status(200).send({ message: 'Ya existe' })
+                    }
+                } else {
+                    res.status(200).send({ message: 'Ya existe' })
                 }
-                
-                // Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
-                //     if (err) {
-                //         res.status(200).send({ message: 'Error al actualizar' });
-                //     } else {
-                //         if (!moduleUpdate) {
-                //             res.status(200).send({ message: 'No se pudo actualizar' });
-                //         } else {
-                //             if (params.options) {
-                //                 Module.update({ moduleId }, { $set: { 'options': [] } })
-                //             }
-                //             res.status(200).send([moduleUpdate]);
-                //         }
-                //     }
-                // });
             } else {
                 Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
                     if (err) {

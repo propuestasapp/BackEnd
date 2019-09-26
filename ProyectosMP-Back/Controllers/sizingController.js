@@ -202,17 +202,29 @@ function listSizing(req, res) {
 function searchSizing(req, res) {
     var sizingId = req.params.id;
 
-    Sizing.findOne({ _id: sizingId }, (err, found) => {
+    console.log(sizingId)
+    Sizing.find({ _id: sizingId}, (err, encontrado) => {
         if (err) {
-            res.status(200).send({ message: 'Error al buscar' });
+            res.status(200).send({ message: 'Error al buscar' })
         } else {
-            if (!found) {
+            if (!encontrado ) {
                 res.status(200).send({ message: 'No se encontro nada' });
             } else {
-                res.status(200).send([found])
+                res.status(200).send(encontrado)
             }
         }
     })
+    // Sizing.find({ _id: sizingId }, (err, found) => {
+    //     if (err) {
+    //         res.status(200).send({ message: 'Error al buscar' });
+    //     } else {
+    //         if (!found) {
+    //             res.status(200).send({ message: 'No se encontro nada' });
+    //         } else {
+    //             res.status(200).send([found])
+    //         }
+    //     }
+    // })
 }
 
 function updateSizing(req, res) {
