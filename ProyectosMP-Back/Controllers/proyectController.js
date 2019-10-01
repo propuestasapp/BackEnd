@@ -420,11 +420,15 @@ function listModule2(req, res) {
 function searchModuleId(req, res) {
     var moduleId = req.params.id;
 
-    Module.findOne({ _id: moduleId }, (err, module) => {
+    Module.findOne({ _id: moduleId }, (err, modul) => {
         if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
+            res.status(200).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ module });
+            if(!modul){
+                res.status(200).send({message: 'No existe el módulo'})
+            }else{
+                res.status(200).send({ modul });
+            }
         }
     });
 }
@@ -495,6 +499,7 @@ function updateModule(req, res) {
 function deleteModule(req, res) {
     var moduleId = req.params.id;
 
+    Proyect.find
     Module.findByIdAndDelete(moduleId, (err, moduleDelete) => {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar' });
