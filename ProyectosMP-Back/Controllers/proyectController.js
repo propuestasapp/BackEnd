@@ -534,6 +534,7 @@ function saveProyect(req, res) {
             proyect.dateDelivery = params.dateDelivery;
             proyect.effectiveDays = params.effectiveDays;
             proyect.description = params.description;
+            Proyect.dataBase = params.dataBase;
             proyect.status = params.status;
             proyect.countersStatus = params.status;
 

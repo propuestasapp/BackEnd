@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var equipmentProjectionSchema = Schema({
     equipProject: String,
     modul: String,
-    'options': [],
+    'options': {},
     transacPeak: Number,
     increase: Number,
     projecTrans: Number,

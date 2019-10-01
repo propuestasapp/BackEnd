@@ -20,6 +20,7 @@ var proyectSchema = Schema({
     dateDelivery: Date,
     effectiveDays: String,
     description: String,
+    dataBase: String,
     status: String,
     countersStatus: String
 })
