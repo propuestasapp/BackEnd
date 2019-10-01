@@ -145,7 +145,7 @@ function saveSizing(req, res) {
             if (err) {
                 res.status(404).send({ message: 'No se puedo buscar' });
             } else {
-                if (found) {
+                if (found.length > 0) {
                     res.status(200).send({ message: 'Ya existe' });
                 } else {
                     sizing._id = params._id;
