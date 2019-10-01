@@ -436,11 +436,15 @@ function searchModuleId(req, res) {
 function searchModuleName(req, res) {
     var moduleId = req.params.id;
 
-    Module.findOne({ name: moduleId }, (err, module) => {
+    Module.findOne({ name: moduleId }, (err, modul) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send({ module });
+            if(!modul){
+                res.status(200).send({message: 'No existe el módulo'})
+            }else{
+                res.status(200).send({ modul });
+            }
         }
     });
 }
