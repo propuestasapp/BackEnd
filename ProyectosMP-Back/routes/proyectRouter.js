@@ -39,6 +39,8 @@ api.put('/deleteModule/:id', proyectController.deleteModule);
 /************************ PROYECT *********************************/
 api.post('/saveProyect/:rol', proyectController.saveProyect);
 api.post('/saveFile/:id', proyectController.saveFile);
+api.get('/listFile/:id', proyectController.listFile);
+api.put('/deleteFile/:id/:name', proyectController.deleteFile);
 api.get('/listProyect', proyectController.listProyect);
 api.post('/searchProyect/:id', proyectController.searchProyect);
 api.put('/updateProyect/:id', proyectController.updateProyect);

@@ -11,6 +11,13 @@ var User = require('../models/user');
 var Country = require('../models/country');
 var SimpleTask = require('../models/simpleTask');
 
+/////////////////////////////// CREAR CARPETA /////////////////////////////////////////
+//Fuente: https://www.iteramos.com/pregunta/48305/nodejs-crear-carpeta-o-la-utilizacion-de-las
+var mkdirp = require('mkdirp');
+///////////////////////////////////// LISTAR ARCHIVOS //////////////////////////////////////////
+//TOMADO DE: https://como.help/nodejs/javascript/como-listar-los-archivos-de-un-folder-con-nodejs
+var fs = require('fs');
+
 /******************************************** COUNTRY ****************************************************/
 function saveCountry(req, res) {
     var country = new Country();
@@ -444,7 +451,7 @@ function updateModule(req, res) {
         } else {
             if (found.length > 0) {
                 if (found.length == 1) {
-                    if(moduleId == found[0]._id){
+                    if (moduleId == found[0]._id) {
                         Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
                             if (err) {
                                 res.status(200).send({ message: 'Error al actualizar' });
@@ -459,7 +466,7 @@ function updateModule(req, res) {
                                 }
                             }
                         });
-                    }else{
+                    } else {
                         res.status(200).send({ message: 'Ya existe' })
                     }
                 } else {
@@ -552,17 +559,44 @@ function saveFile(req, res) {
     var file = req.files.file;
     var proyectId = req.params.id;
 
-    Proyect.findOne({ _id: proyectId }, (err, proyect) => {
+    /////////////////// CREAR CARPETA ///////////////////////////
+    mkdirp(`./files/${proyectId}`, function (err) {
         if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
+            res.status(200).send({ message: 'Error al crear la carpeta' })
         } else {
-            file.mv(`./files/${proyectId}.${file.name}`, err => {
-                if (err) return res.status(200).send({ message: err })
-
-                return res.status(200).send({ message: 'File upload' })
-            })
+            ////////////////////// GUARDAR ARCHIVO ///////////////////////////////
+            file.mv(`./files/${proyectId}/${file.name}`, err => {
+                if (err) {
+                    res.status(200).send({ message: err })
+                } else {
+                    res.status(200).send({message: 'Se guardo correctamente'})
+                }
+            });
         }
     });
+}
+
+function listFile(req, res){
+    var proyectId = req.params.id
+    ///////////////////////// LISTAR ARCHIVOS ////////////////////////////////
+    fs.readdir(`./files/${proyectId}`, function (err, files) {
+        if (err) {
+            throw err;
+        } else {
+            res.status(200).send(files)
+        }
+    });
+}
+
+//TOMADO DE: https://stackoverrun.com/es/q/1298435
+function deleteFile(req, res){
+    var fs = require('fs');
+    var proyectId = req.params.id;
+    var nameFile = req.params.name;
+
+    ///////////////////// ELIMINAR ARCHIVOS ///////////////////////////
+    fs.unlinkSync(`./files/${proyectId}/${nameFile}`);
+    return res.status(200).send({message: 'Se elimino correctamente'}) 
 }
 
 function listProyect(req, res) {
@@ -727,6 +761,9 @@ module.exports = {
     updateUser,
     deleteUser,
     login,
+    listUser,
+    searchUser,
+    searchUserEmail,
     saveCompany,
     listCompany,
     searchCompany,
@@ -741,13 +778,12 @@ module.exports = {
     deleteModule,
     saveProyect,
     saveFile,
+    listFile,
+    deleteFile,
     listProyect,
     searchProyect,
     updateProyect,
     deleteProyect,
-    listUser,
-    searchUser,
-    searchUserEmail,
     saveSimpleTask,
     listSimpleTask,
     searchSimpleTask,

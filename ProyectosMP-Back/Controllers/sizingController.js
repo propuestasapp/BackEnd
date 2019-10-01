@@ -10,6 +10,7 @@ function saveEquipmentProjection(req, res) {
     if (params.equipProject && params.modul && params.transacPeak && params.increase && params.projecTrans && params.o8PHI && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.recordsKey && params.multiplier && params.coresDB && params.multiMemoryDB && params.memoryDB && params.datamart && params.history && params.total && params.coresServer) {
         equipmentProjection.equipProject = params.equipProject;
         equipmentProjection.modul = params.modul;
+        equipmentProjection.options = params.options;
         equipmentProjection.transacPeak = params.transacPeak;
         equipmentProjection.increase = params.increase;
         equipmentProjection.projecTrans = params.projecTrans;
@@ -202,7 +203,6 @@ function listSizing(req, res) {
 function searchSizing(req, res) {
     var sizingId = req.params.id;
 
-    console.log(sizingId)
     Sizing.find({ _id: sizingId}, (err, encontrado) => {
         if (err) {
             res.status(200).send({ message: 'Error al buscar' })
