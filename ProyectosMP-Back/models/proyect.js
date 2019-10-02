@@ -22,6 +22,7 @@ var proyectSchema = Schema({
     description: String,
     dataBase: String,
     status: String,
+    lenguage: String,
     countersStatus: String
 })
 

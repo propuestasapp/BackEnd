@@ -324,7 +324,6 @@ function saveModule(req, res) {
 
     if ('ADVISER' == rol) {
         res.status(500).send({ message: 'No tienes permiso' });
-        console.log(res)
     } else {
         if ('ADMIN' == rol) {
             modules.status = 'ACCEPTED';
@@ -524,7 +523,7 @@ function saveProyect(req, res) {
     var rol = req.params.rol;
 
     if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
-        res.status(500).send({ message: 'No tienes permiso' });
+        res.status(200).send({ message: 'No tienes permiso' });
     } else {
         if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status) {
             proyect._id = params._id;
@@ -545,6 +544,7 @@ function saveProyect(req, res) {
             proyect.description = params.description;
             Proyect.dataBase = params.dataBase;
             proyect.status = params.status;
+            proyect.lenguage = params.lenguage;
             proyect.countersStatus = params.status;
 
             proyect.save((err, proyectSave) => {
