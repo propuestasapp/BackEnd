@@ -139,13 +139,13 @@ function saveSizing(req, res) {
     var params = req.body;
     var sizing = new Sizing();
 
-    if (params._id && params.proyect && params.trxPeak && params.coresDB && params.memoryDB && params.datamart && params.history && params.temp && params.logs && params.total && params.coresSrv && params.numberServers && params.coresServer && params.memoryServer && params.coresAlert && params.memoryAlert && params.version) {
+    if (params._id && params.proyect && params.trxPeak && params.coresDB && params.memoryDB && params.datamart && params.history && params.temp && params.logs && params.total && params.coresSrv > 0 && params.numberServers > 0 && params.coresServer && params.memoryServer > 0 && params.coresAlert && params.memoryAlert && params.version) {
 
         Sizing.findOne({ proyect: params.proyect, version: params.version }, (err, found) => {
             if (err) {
-                res.status(404).send({ message: 'No se puedo buscar' });
+                res.status(200).send({ message: 'No se puedo buscar' });
             } else {
-                if (found.length > 0) {
+                if (found) {
                     res.status(200).send({ message: 'Ya existe', found});
                 } else {
                     sizing._id = params._id;
@@ -168,7 +168,7 @@ function saveSizing(req, res) {
 
                     sizing.save((err, saveCorrect) => {
                         if (err) {
-                            res.status(500).send({ message: "Error al guardar" });
+                            res.status(200).send({ message: "Error al guardar" });
                         } else {
                             if (!saveCorrect) {
                                 res.status(404).send({ message: 'No se puede guardar' });
