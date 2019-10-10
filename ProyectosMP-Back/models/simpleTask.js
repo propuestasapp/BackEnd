@@ -13,7 +13,8 @@ var simpleTaskSchema = Schema({
     planningDate: Date,
     percent: Number,
     comments: String,
-    closedDate: Date
+    closedDate: Date,
+    by: String
 });
 
 module.exports = mongoose.model('simpleTask', simpleTaskSchema);

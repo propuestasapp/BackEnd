@@ -48,9 +48,10 @@ api.put('/deleteProyect/:id', proyectController.deleteProyect);
 
 /************************ SIMPLE TASK *********************************/
 api.post('/saveSimpleTask/:rol', proyectController.saveSimpleTask);
-api.get('/listSimpleTask', proyectController.listSimpleTask);
+api.get('/listSimpleTask/:by', proyectController.listSimpleTask);
 api.post('/searchSimpleTask/:id', proyectController.searchSimpleTask);
 api.put('/updateSimpleTask/:id', proyectController.updateSimpleTask);
 api.put('/deleteSimpleTask/:id', proyectController.deleteSimpleTask);
+api.put('/deleteSimpleTaskBy/:by', proyectController.deleteSimpleTaskBy);
 
 module.exports = api;

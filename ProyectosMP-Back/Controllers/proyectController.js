@@ -137,7 +137,7 @@ function searchUser(req, res) {
             if (!user) {
                 res.status(200).send({ message: 'No se pudo listar' });
             } else {
-                res.status(200).send({ user });
+                res.status(200).send([ user ]);
             }
         }
     });
@@ -703,8 +703,9 @@ function saveSimpleTask(req, res) {
 }
 
 function listSimpleTask(req, res) {
+    var hechoPor = req.params.by;
 
-    SimpleTask.find((err, found) => {
+    SimpleTask.find({by: hechoPor}, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar' });
         } else {
@@ -763,6 +764,37 @@ function deleteSimpleTask(req, res) {
     });
 }
 
+function deleteSimpleTaskBy(req, res) {
+    var hechoPor = req.params.by;
+
+    SimpleTask.find({by: hechoPor}, (err, found) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al buscar' });
+        } else {
+            if (found.length == 0) {
+                res.status(200).send({ message: 'Error al buscar' });
+            } else {
+                for(let i = 0; i < found.length; i++){
+                    SimpleTask.findByIdAndDelete({_id: found[i]._id}, (er, deleteSimpleTask) => {
+                        if(er){
+                            res.status(200).send({message: 'Error al eliminar'});
+                        }else{
+                            if(!deleteSimpleTask){
+                                res.status(200).send({message: 'No se puedo eliminar'})
+                            }else{
+                                if(i == found.length-1){
+                                    res.status(200).send({message: 'Eliminado correctamente'})
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+
+        }
+    });
+}
+
 module.exports = {
     saveCountry,
     listCountry,
@@ -798,5 +830,6 @@ module.exports = {
     listSimpleTask,
     searchSimpleTask,
     updateSimpleTask,
-    deleteSimpleTask
+    deleteSimpleTask,
+    deleteSimpleTaskBy
 }
