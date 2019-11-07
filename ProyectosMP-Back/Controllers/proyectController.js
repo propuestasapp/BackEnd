@@ -90,25 +90,29 @@ function saveUser(req, res) {
 
         User.findOne({ email: user.email }, (err, issetUser) => {
             if (issetUser) {
-                res.status(200).send({ message: 'El usuario ya esta registrado' });
+                res.status(200).send({ message: 'Ya hay usuario con este correo' });
             } else {
-                if (!issetUser) {
-                    bcrypt.hash(params.password, null, null, function (err, hash) {
-                        user.password = hash;
+                User.findOne({ userName: user.userName }, (err, name) => {
+                    if (name) {
+                        res.status(200).send({ message: 'El nombre de usuario esta siendo utilizado, por favor introduzca otro' });
+                    } else {
+                        bcrypt.hash(params.password, null, null, function (err, hash) {
+                            user.password = hash;
 
-                        user.save((err, userSave) => {
-                            if (err) {
-                                res.status(500).send({ message: 'Error al guardar' });
-                            } else {
-                                if (!userSave) {
-                                    res.status(404).send({ message: 'No se pudo guardar' });
+                            user.save((err, userSave) => {
+                                if (err) {
+                                    res.status(500).send({ message: 'Error al guardar' });
                                 } else {
-                                    res.status(200).send({ user: userSave });
+                                    if (!userSave) {
+                                        res.status(404).send({ message: 'No se pudo guardar' });
+                                    } else {
+                                        res.status(200).send({ user: userSave });
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
-                }
+                    }
+                });
             }
         });
     } else {
@@ -137,7 +141,7 @@ function searchUser(req, res) {
             if (!user) {
                 res.status(200).send({ message: 'No se pudo listar' });
             } else {
-                res.status(200).send([ user ]);
+                res.status(200).send([user]);
             }
         }
     });
@@ -163,20 +167,34 @@ function updateUser(req, res) {
     var params = req.body;
     var userId = req.params.id;
 
-    bcrypt.hash(params.password, null, null, function (err, hash) {
-        params.password = hash;
-        User.findByIdAndUpdate(userId, params, { new: true }, (err, update) => {
-            if (err) {
-                res.status(200).send({ message: 'Error al actualizar' });
+    User.findOne({ userName: params.userName }, (err1, found) => {
+        if (err1) {
+            res.status(200).send({ message: 'Error al buscar' });
+        } else {
+            if (found._id != userId) {
+                res.status(200).send({ message: 'Ya estan utilizando el nombre de usuario' });
             } else {
-                if (!update) {
-                    res.stats(404).send({ message: 'No se pudo actualizar' });
-                } else {
-                    res.status(200).send({ user: update });
-                }
+                bcrypt.hash(params.password, null, null, function (err2, hash) {
+                    if (err2) {
+                        res.status(200).send({ message: 'Error al incriptar' });
+                    } else {
+                        params.password = hash;
+                        User.findByIdAndUpdate(userId, params, { new: true }, (err3, update) => {
+                            if (err3) {
+                                res.status(200).send({ message: 'Error al actualizar' });
+                            } else {
+                                if (!update) {
+                                    res.status(200).send({ message: 'No se pudo actualizar' });
+                                } else {
+                                    res.status(200).send({ user: update });
+                                }
+                            }
+                        });
+                    }
+                });
             }
-        });
-    });
+        }
+    })
 }
 
 function deleteUser(req, res) {
@@ -205,7 +223,6 @@ function login(req, res) {
         } else {
             bcrypt.compare(params.password, user.password, (err, check) => {
                 if (check) {
-                    // console.log(jwt.createToken(user))
                     res.status(200).send({ token: jwt.createToken(user), user: user });
                 } else {
                     res.status(200).send({ message: 'Error en tu contrasena' });
@@ -284,17 +301,27 @@ function updateCompany(req, res) {
     var params = req.body;
     var companyId = req.params.id;
 
-    Company.findByIdAndUpdate(companyId, params, { new: true }, (err, companyUpdate) => {
-        if (err) {
-            res.status(500).send({ message: 'Error al actualizar' });
+    Company.findOne({ name: params.name, country: params.country }, (err1, found) => {
+        if (err1) {
+            res.status(500).send({ message: 'Error al buscar' });
         } else {
-            if (!companyUpdate) {
-                res.status(404).send({ message: 'No se pudo actualizar' });
+            if (found && found._id != companyId) {
+                res.status(200).send({ message: 'La empresa ya existe en dicho país' });
             } else {
-                res.status(200).send({ companyUpdate });
+                Company.findByIdAndUpdate(companyId, params, { new: true }, (err, companyUpdate) => {
+                    if (err) {
+                        res.status(500).send({ message: 'Error al actualizar' });
+                    } else {
+                        if (!companyUpdate) {
+                            res.status(404).send({ message: 'No se pudo actualizar' });
+                        } else {
+                            res.status(200).send({ companyUpdate });
+                        }
+                    }
+                });
             }
         }
-    });
+    })
 }
 
 function deleteCompany(req, res) {
@@ -324,7 +351,6 @@ function saveModule(req, res) {
 
     if ('ADVISER' == rol) {
         res.status(500).send({ message: 'No tienes permiso' });
-        console.log(res)
     } else {
         if ('ADMIN' == rol) {
             modules.status = 'ACCEPTED';
@@ -349,10 +375,6 @@ function saveModule(req, res) {
                             if (!moduleSave) {
                                 res.status(404).send({ message: 'No se pudo guardar' });
                             } else {
-                                if (params.options) {
-                                    Module.update({ _id: moduleSave._id }, { $set: { 'options': [] } })
-                                }
-
                                 res.status(200).send({ module: moduleSave });
                             }
                         }
@@ -424,9 +446,9 @@ function searchModuleId(req, res) {
         if (err) {
             res.status(200).send({ message: 'No se pudo listar' });
         } else {
-            if(!modul){
-                res.status(200).send({message: 'No existe el módulo'})
-            }else{
+            if (!modul) {
+                res.status(200).send({ message: 'No existe el módulo' })
+            } else {
                 res.status(200).send({ modul });
             }
         }
@@ -440,9 +462,9 @@ function searchModuleName(req, res) {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            if(!modul){
-                res.status(200).send({message: 'No existe el módulo'})
-            }else{
+            if (!modul) {
+                res.status(200).send({ message: 'No existe el módulo' })
+            } else {
                 res.status(200).send({ modul });
             }
         }
@@ -453,33 +475,12 @@ function updateModule(req, res) {
     var params = req.body;
     var moduleId = req.params.id;
 
-    Module.find({ name: params.name }, (err, found) => {
+    Module.findOne({ name: params.name }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
-            if (found.length > 0) {
-                if (found.length == 1) {
-                    if (moduleId == found[0]._id) {
-                        Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
-                            if (err) {
-                                res.status(200).send({ message: 'Error al actualizar' });
-                            } else {
-                                if (!moduleUpdate) {
-                                    res.status(200).send({ message: 'No se pudo actualizar' });
-                                } else {
-                                    if (params.options) {
-                                        Module.update({ moduleId }, { $set: { 'options': [] } })
-                                    }
-                                    res.status(200).send([moduleUpdate]);
-                                }
-                            }
-                        });
-                    } else {
-                        res.status(200).send({ message: 'Ya existe' })
-                    }
-                } else {
-                    res.status(200).send({ message: 'Ya existe' })
-                }
+            if (found && found._id != moduleId) {
+                res.status(200).send({ message: 'El módulo ya existe' });
             } else {
                 Module.findByIdAndUpdate(moduleId, params, { new: true }, (err, moduleUpdate) => {
                     if (err) {
@@ -488,9 +489,6 @@ function updateModule(req, res) {
                         if (!moduleUpdate) {
                             res.status(200).send({ message: 'No se pudo actualizar' });
                         } else {
-                            if (params.options) {
-                                Module.update({ moduleId }, { $set: { 'options': [] } })
-                            }
                             res.status(200).send([moduleUpdate]);
                         }
                     }
@@ -550,7 +548,6 @@ function saveProyect(req, res) {
             proyect.save((err, proyectSave) => {
                 if (err) {
                     res.status(200).send({ message: 'Error al guardar' });
-                    console.log(err)
                 } else {
                     if (!proyectSave) {
                         res.status(404).send({ message: 'No se pudo guardar' });
@@ -579,14 +576,14 @@ function saveFile(req, res) {
                 if (err) {
                     res.status(200).send({ message: err })
                 } else {
-                    res.status(200).send({message: 'Se guardo correctamente'})
+                    res.status(200).send({ message: 'Se guardo correctamente' })
                 }
             });
         }
     });
 }
 
-function listFile(req, res){
+function listFile(req, res) {
     var proyectId = req.params.id
     ///////////////////////// LISTAR ARCHIVOS ////////////////////////////////
     fs.readdir(`./files/${proyectId}`, function (err, files) {
@@ -599,14 +596,14 @@ function listFile(req, res){
 }
 
 //TOMADO DE: https://stackoverrun.com/es/q/1298435
-function deleteFile(req, res){
+function deleteFile(req, res) {
     var fs = require('fs');
     var proyectId = req.params.id;
     var nameFile = req.params.name;
 
     ///////////////////// ELIMINAR ARCHIVOS ///////////////////////////
     fs.unlinkSync(`./files/${proyectId}/${nameFile}`);
-    return res.status(200).send({message: 'Se elimino correctamente'}) 
+    return res.status(200).send({ message: 'Se elimino correctamente' })
 }
 
 function listProyect(req, res) {
@@ -684,6 +681,7 @@ function saveSimpleTask(req, res) {
             simpleTask.percent = params.percent;
             simpleTask.comments = params.comments;
             simpleTask.closedDate = params.closedDate;
+            simpleTask.by = params.by;
 
             simpleTask.save((err, simpleTaskSave) => {
                 if (err) {
@@ -705,7 +703,7 @@ function saveSimpleTask(req, res) {
 function listSimpleTask(req, res) {
     var hechoPor = req.params.by;
 
-    SimpleTask.find({by: hechoPor}, (err, found) => {
+    SimpleTask.find({ by: hechoPor }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar' });
         } else {
@@ -767,23 +765,23 @@ function deleteSimpleTask(req, res) {
 function deleteSimpleTaskBy(req, res) {
     var hechoPor = req.params.by;
 
-    SimpleTask.find({by: hechoPor}, (err, found) => {
+    SimpleTask.find({ by: hechoPor }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
             if (found.length == 0) {
                 res.status(200).send({ message: 'Error al buscar' });
             } else {
-                for(let i = 0; i < found.length; i++){
-                    SimpleTask.findByIdAndDelete({_id: found[i]._id}, (er, deleteSimpleTask) => {
-                        if(er){
-                            res.status(200).send({message: 'Error al eliminar'});
-                        }else{
-                            if(!deleteSimpleTask){
-                                res.status(200).send({message: 'No se puedo eliminar'})
-                            }else{
-                                if(i == found.length-1){
-                                    res.status(200).send({message: 'Eliminado correctamente'})
+                for (let i = 0; i < found.length; i++) {
+                    SimpleTask.findByIdAndDelete({ _id: found[i]._id }, (er, deleteSimpleTask) => {
+                        if (er) {
+                            res.status(200).send({ message: 'Error al eliminar' });
+                        } else {
+                            if (!deleteSimpleTask) {
+                                res.status(200).send({ message: 'No se puedo eliminar' })
+                            } else {
+                                if (i == found.length - 1) {
+                                    res.status(200).send({ message: 'Eliminado correctamente' })
                                 }
                             }
                         }
