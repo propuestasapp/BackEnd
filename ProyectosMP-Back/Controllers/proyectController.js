@@ -543,7 +543,7 @@ function saveProyect(req, res) {
             proyect.description = params.description;
             Proyect.dataBase = params.dataBase;
             proyect.status = params.status;
-            proyect.countersStatus = params.status;
+            proyect.lenguage = params.lenguage;
 
             proyect.save((err, proyectSave) => {
                 if (err) {
@@ -588,7 +588,7 @@ function listFile(req, res) {
     ///////////////////////// LISTAR ARCHIVOS ////////////////////////////////
     fs.readdir(`./files/${proyectId}`, function (err, files) {
         if (err) {
-            throw err;
+            res.status(200).send({message: 'No se encontro la carpeta'})
         } else {
             res.status(200).send(files)
         }

@@ -134,6 +134,32 @@ function deleteEquipmentProjection(req, res) {
     });
 }
 
+function deleteAllEP(req, res) {
+    var project = req.params.id;
+
+    EquipmentProjection.find({equipProject: project}, (err, found) => {
+        if(err){
+            res.status(500).send({ message: 'Error al buscar' });
+        }else{
+            if(!found){
+                res.status(200).send({ message: 'No se encontró nada' });
+            }else{
+                for(let i = 0; i < found.length; i++){
+                    EquipmentProjection.findByIdAndDelete(found[i]._id,(err2, del) => {
+                        if (err) {
+                            res.status(500).send({ message: 'Error al eliminar' });
+                        } else {
+                            if (!del) {
+                                res.status(404).send({ message: 'No se pudo eliminar' });
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    })
+}
+
 /************************************************************* SIZING *********************************************************/
 function saveSizing(req, res) {
     var params = req.body;
@@ -277,6 +303,7 @@ module.exports = {
     searchEquipmentProjection,
     updateEquipmentProjection,
     deleteEquipmentProjection,
+    deleteAllEP,
     saveSizing,
     listSizing,
     searchSizing,

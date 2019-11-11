@@ -22,7 +22,7 @@ var proyectSchema = Schema({
     description: String,
     dataBase: String,
     status: String,
-    countersStatus: String
+    lenguage: String
 })
 
 module.exports = mongoose.model('proyect', proyectSchema);
