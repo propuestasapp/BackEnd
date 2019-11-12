@@ -245,12 +245,11 @@ function saveCompany(req, res) {
         } else {
             company.status = 'REVIEW'
         }
-        if (params.name && params.description && params.country) {
+        if (params.name && params.description) {
             company.name = params.name.toUpperCase();
             company.description = params.description;
-            company.country = params.country;
 
-            Company.findOne({ name: company.name, country: company.country }, (errr, found) => {
+            Company.findOne({ name: company.name }, (errr, found) => {
                 if (found) {
                     res.status(200).send({ message: "Ya esta registrada" });
                 } else {
