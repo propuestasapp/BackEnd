@@ -22,6 +22,8 @@ var equipmentProjectionSchema = Schema({
     parallelTrans: Number,
     trxsSeg: Number,
     coresAnalysis: Number,
+    numberServers: Number, 
+    coresSrv: Number,
     recordLength: Number,
     percentageOccupation: Number,
     onlineHistory: Number,

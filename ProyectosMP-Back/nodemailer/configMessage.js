@@ -29,7 +29,6 @@ function enviarMensaje(req, res) {
             <div>
                 <h2>Código de recuperación</h2>
                 <div class="card" style="width: 18rem;">
-                    <img src="https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiIncSW5eTkAhUHvlkKHawlDpkQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.redeszone.net%2F2018%2F11%2F20%2Ferrores-quizas-cometido-utilizar-contrasena%2F&psig=AOvVaw2BVW_VArhWGQ5SNw-GHAKa&ust=1569254083586977" class="card-img-top">
                     <div class="card-body">
                         <p class="card-text">El siguiente código es únicamente para la recuperación de contraseña. Debe copiar y pegar donde se le solicitó.</p>
                     </div>

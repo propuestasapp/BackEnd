@@ -10,6 +10,7 @@
   .then((err, res)=>{
       console.log('Conexion a la base de datos realizada correctamente');
     proyectController.saveCountry();
+    proyectController.adminUser();
     // mensaje();
       app.listen(port,()=>{
         console.log('El servidor de node y express estan conectados');

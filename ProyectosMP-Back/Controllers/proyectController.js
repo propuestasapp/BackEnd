@@ -76,6 +76,28 @@ function updateCountry(req, res) {
 }
 
 /******************************************** USER ****************************************************/
+function adminUser(req, res) {
+    var user = new User();
+
+    User.find((err, found) => {
+        if(found.length == 0){
+            user.name = 'ADMINISTRATOR'
+            user.lastName = 'ADMINISTRATOR';
+            user.userName = 'ADMINISTRATOR';
+            user.email = 'administrator123@plus_ti.com';
+            user.password = 'AdminPlusDimmer*123';
+            user.rol = 'ADMIN';
+
+            bcrypt.hash(user.password, null, null, function (err, hash) {
+                user.password = hash;
+
+                user.save((err, userSave) => {
+                });
+            });
+        }
+    })
+}
+
 function saveUser(req, res) {
     var params = req.body;
     var user = new User();
@@ -540,7 +562,7 @@ function saveProyect(req, res) {
             proyect.dateDelivery = params.dateDelivery;
             proyect.effectiveDays = params.effectiveDays;
             proyect.description = params.description;
-            Proyect.dataBase = params.dataBase;
+            proyect.dataBase = params.dataBase;
             proyect.status = params.status;
             proyect.lenguage = params.lenguage;
 
@@ -796,6 +818,7 @@ module.exports = {
     saveCountry,
     listCountry,
     updateCountry,
+    adminUser,
     saveUser,
     updateUser,
     deleteUser,

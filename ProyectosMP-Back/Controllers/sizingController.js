@@ -7,7 +7,8 @@ var Sizing = require('../models/sizing');
 function saveEquipmentProjection(req, res) {
     var equipmentProjection = new EquipmentProjection();
     var params = req.body;
-    if (params.equipProject && params.modul && params.transacPeak && params.increase && params.projecTrans && params.o8PHI && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.recordsKey && params.multiplier && params.coresDB && params.multiMemoryDB && params.memoryDB && params.datamart && params.history && params.total && params.coresServer) {
+    
+    if (params.equipProject && params.modul && params.transacPeak && params.increase && params.projecTrans && params.o8PHI && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.recordsKey && params.multiplier && params.multiMemoryDB && params.datamart && params.history && params.total) {
         equipmentProjection.equipProject = params.equipProject;
         equipmentProjection.modul = params.modul;
         equipmentProjection.options = params.options;
@@ -26,6 +27,8 @@ function saveEquipmentProjection(req, res) {
         equipmentProjection.parallelTrans = params.parallelTrans;
         equipmentProjection.trxsSeg = params.trxsSeg;
         equipmentProjection.coresAnalysis = params.coresAnalysis;
+        equipmentProjection.coresSrv = params.coresSrv;
+        equipmentProjection.numberServers = params.numberServers;
         equipmentProjection.recordLength = params.recordLength;
         equipmentProjection.percentageOccupation = params.percentageOccupation;
         equipmentProjection.onlineHistory = params.onlineHistory;
