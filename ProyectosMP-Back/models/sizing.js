@@ -20,6 +20,9 @@ var sizingSchema = Schema({
     memoryServer: Number,
     coresAlert: Number,
     memoryAlert: Number,
+    combinar: Boolean,
+    comCores: Number,
+    comMemory: Number,
     version: String
 })
 
