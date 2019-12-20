@@ -322,12 +322,12 @@ function updateCompany(req, res) {
     var params = req.body;
     var companyId = req.params.id;
 
-    Company.findOne({ name: params.name, country: params.country }, (err1, found) => {
+    Company.findOne({ name: params.name }, (err1, found) => {
         if (err1) {
             res.status(500).send({ message: 'Error al buscar' });
         } else {
             if (found && found._id != companyId) {
-                res.status(200).send({ message: 'La empresa ya existe en dicho país' });
+                res.status(200).send({ message: 'La empresa ya existe' });
             } else {
                 Company.findByIdAndUpdate(companyId, params, { new: true }, (err, companyUpdate) => {
                     if (err) {
