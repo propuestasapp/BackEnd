@@ -197,6 +197,7 @@ function saveSizing(req, res) {
                     sizing.combinar = params.combinar;
                     sizing.comCores = params.comCores;
                     sizing.comMemory = params.comMemory;
+                    sizing.environments = params.environments;
 
                     sizing.save((err, saveCorrect) => {
                         if (err) {

@@ -38,6 +38,8 @@ function enviarMensaje(req, res) {
         `
     }
 
+    console.log(params.code)
+
     smtpTransport.sendMail(mailOptions, function (err, res){
         try{
             return {message: 'Se envió correctamente'}

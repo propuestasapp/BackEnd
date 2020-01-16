@@ -10,7 +10,7 @@ var proyectSchema = Schema({
     priorityToday: Number,
     company: String,
     country: String,
-    module: [{ type: Schema.ObjectId, ref: 'module' }],
+    module: [],
     dateRequest: Date,
     dateStart: Date,
     whoAskFor: String,
@@ -22,7 +22,8 @@ var proyectSchema = Schema({
     description: String,
     dataBase: String,
     status: String,
-    lenguage: String
+    lenguage: String,
+    __v: String
 })
 
 module.exports = mongoose.model('proyect', proyectSchema);

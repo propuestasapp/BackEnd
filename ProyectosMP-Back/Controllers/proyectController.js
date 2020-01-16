@@ -193,7 +193,7 @@ function updateUser(req, res) {
         if (err1) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
-            if (found._id != userId) {
+            if (found) {
                 res.status(200).send({ message: 'Ya estan utilizando el nombre de usuario' });
             } else {
                 bcrypt.hash(params.password, null, null, function (err2, hash) {
@@ -460,6 +460,22 @@ function listModule2(req, res) {
     });
 }
 
+function listModuleVersion(req, res) {
+    var vers = req.params.vers;
+
+    Module.find({ status: 'ACCEPTED', "options.version": vers }, (err, found) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al listar' });
+        } else {
+            if (!found) {
+                res.status(200).send({ message: 'No se encontro nada' });
+            } else {
+                res.status(200).send({ modules: found })
+            }
+        }
+    });
+}
+
 function searchModuleId(req, res) {
     var moduleId = req.params.id;
 
@@ -545,7 +561,7 @@ function saveProyect(req, res) {
     if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
         res.status(500).send({ message: 'No tienes permiso' });
     } else {
-        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status) {
+        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.__v) {
             proyect._id = params._id;
             proyect.responsability = params.responsability;
             proyect.priorityDocument = params.priorityDocument;
@@ -565,6 +581,7 @@ function saveProyect(req, res) {
             proyect.dataBase = params.dataBase;
             proyect.status = params.status;
             proyect.lenguage = params.lenguage;
+            proyect.__v = params.__v;
 
             proyect.save((err, proyectSave) => {
                 if (err) {
@@ -834,6 +851,7 @@ module.exports = {
     saveModule,
     listModule,
     listModule2,
+    listModuleVersion,
     searchModuleName,
     searchModuleId,
     updateModule,

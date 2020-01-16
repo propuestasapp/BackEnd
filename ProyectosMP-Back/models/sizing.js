@@ -23,7 +23,8 @@ var sizingSchema = Schema({
     combinar: Boolean,
     comCores: Number,
     comMemory: Number,
-    version: String
+    version: String,
+    environments: {}
 })
 
 module.exports = mongoose.model('sizing', sizingSchema);
