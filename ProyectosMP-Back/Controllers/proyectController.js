@@ -194,7 +194,28 @@ function updateUser(req, res) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
             if (found) {
-                res.status(200).send({ message: 'Ya estan utilizando el nombre de usuario' });
+                if(found._id != userId){
+                    res.status(200).send({ message: 'Ya estan utilizando el nombre de usuario' });
+                }else{
+                    bcrypt.hash(params.password, null, null, function (err2, hash) {
+                        if (err2) {
+                            res.status(200).send({ message: 'Error al incriptar' });
+                        } else {
+                            params.password = hash;
+                            User.findByIdAndUpdate(userId, params, { new: true }, (err3, update) => {
+                                if (err3) {
+                                    res.status(200).send({ message: 'Error al actualizar' });
+                                } else {
+                                    if (!update) {
+                                        res.status(200).send({ message: 'No se pudo actualizar' });
+                                    } else {
+                                        res.status(200).send({ user: update });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
             } else {
                 bcrypt.hash(params.password, null, null, function (err2, hash) {
                     if (err2) {
