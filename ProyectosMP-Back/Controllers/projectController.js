@@ -6,7 +6,7 @@ var jwt = require('../services/jwt');
 
 var Company = require('../models/company');
 var Module = require('../models/module');
-var Proyect = require('../models/proyect');
+var Project = require('../models/project');
 var User = require('../models/user');
 var Country = require('../models/country');
 var SimpleTask = require('../models/simpleTask');
@@ -84,8 +84,8 @@ function adminUser(req, res) {
             user.name = 'ADMINISTRATOR'
             user.lastName = 'ADMINISTRATOR';
             user.userName = 'ADMINISTRATOR';
-            user.email = 'administrator123@plus_ti.com';
-            user.password = 'AdminPlusDimmer*123';
+            user.email = 'plusti.dimmer@gmail.com';
+            user.password = '*dimmer123*';
             user.rol = 'ADMIN';
 
             bcrypt.hash(user.password, null, null, function (err, hash) {
@@ -169,7 +169,7 @@ function searchUser(req, res) {
     });
 }
 
-function searchUserEmail(req, res) {
+function searchUserUserName(req, res) {
     var mail = req.params.mail;
 
     User.findOne({ email: mail }, (err, user) => {
@@ -258,7 +258,8 @@ function deleteUser(req, res) {
 
 function login(req, res) {
     var params = req.body;
-    User.findOne({ email: params.email }, (err, user) => {
+
+    User.findOne({ userName: params.userName }, (err, user) => {
         if (err) {
             res.status(200).send({ message: 'Error al ingresar' });
         } else if (!user) {
@@ -387,32 +388,30 @@ function saveModule(req, res) {
     var params = req.body;
     var modules = new Module();
     var rol = req.params.rol;
-    var mongoose = require('mongoose');
-    var Schema = mongoose.Schema;
-    var name = "summary"
 
     if ('ADVISER' == rol) {
         res.status(500).send({ message: 'No tienes permiso' });
     } else {
         if ('ADMIN' == rol) {
-            modules.status = 'ACCEPTED';
+            modules.state = 'ACCEPTED';
         } else {
-            modules.status = 'REVIEW'
+            modules.state = 'REVIEW'
         }
-        if (params.name && params.description && params.months && params.keys) {
+        if (params.name && params.description && params.months && params.keys && params.version) {
             modules.name = params.name;
             modules.description = params.description;
             modules.months = params.months;
             modules.keys = params.keys;
-            modules.options = params.options
+            modules.options = params.options;
+            modules.version = params.version;
 
-            Module.findOne({ name: modules.name }, (err, found) => {
+            Module.findOne({ name: modules.name, version: modules.version }, (err, found) => {
                 if (found) {
                     res.status(200).send({ message: 'Ya existe el módulo' });
                 } else {
                     modules.save((err, moduleSave) => {
                         if (err) {
-                            res.status(500).send({ message: 'Error al guardar' });
+                            res.status(200).send({ message: 'Error al guardar' });
                         } else {
                             if (!moduleSave) {
                                 res.status(404).send({ message: 'No se pudo guardar' });
@@ -430,9 +429,9 @@ function saveModule(req, res) {
 }
 
 function listModule(req, res) {
-    var stat = req.params.rol;
+    var stat = req.params.state;
 
-    Module.find({ status: stat }, (err, found) => {
+    Module.find({ state: stat }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar' });
         } else {
@@ -484,7 +483,7 @@ function listModule2(req, res) {
 function listModuleVersion(req, res) {
     var vers = req.params.vers;
 
-    Module.find({ status: 'ACCEPTED', "options.version": vers }, (err, found) => {
+    Module.find({ $or: [{state: 'ACCEPTED', version: vers}, {state: 'ACCEPTED', version: 'All_Vs'}] }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar' });
         } else {
@@ -559,7 +558,7 @@ function updateModule(req, res) {
 function deleteModule(req, res) {
     var moduleId = req.params.id;
 
-    Proyect.find
+    Project.find
     Module.findByIdAndDelete(moduleId, (err, moduleDelete) => {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar' });
@@ -573,45 +572,45 @@ function deleteModule(req, res) {
         }
     });
 }
-/********************************************** PROYECT **************************************************/
-function saveProyect(req, res) {
+/********************************************** PROJECT **************************************************/
+function saveProject(req, res) {
     var params = req.body;
-    var proyect = new Proyect();
+    var project = new Project();
     var rol = req.params.rol;
 
     if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
-        res.status(500).send({ message: 'No tienes permiso' });
+        res.status(200).send({ message: 'No tienes permiso' });
     } else {
-        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.description && params.status && params.__v) {
-            proyect._id = params._id;
-            proyect.responsability = params.responsability;
-            proyect.priorityDocument = params.priorityDocument;
-            proyect.priorityToday = params.priorityToday;
-            proyect.company = params.company;
-            proyect.country = params.country;
-            proyect.module = params.module;
-            proyect.dateRequest = params.dateRequest;
-            proyect.dateStart = params.dateStart;
-            proyect.whoAskFor = params.whoAskFor;
-            proyect.percentageProgress = params.percentageProgress;
-            proyect.dateLimit = params.dateLimit;
-            proyect.remainingDays = params.remainingDays;
-            proyect.dateDelivery = params.dateDelivery;
-            proyect.effectiveDays = params.effectiveDays;
-            proyect.description = params.description;
-            proyect.dataBase = params.dataBase;
-            proyect.status = params.status;
-            proyect.lenguage = params.lenguage;
-            proyect.__v = params.__v;
+        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.state && params.version) {
+            project._id = params._id;
+            project.responsability = params.responsability;
+            project.priorityDocument = params.priorityDocument;
+            project.priorityToday = params.priorityToday;
+            project.company = params.company;
+            project.country = params.country;
+            project.module = params.module;
+            project.dateRequest = params.dateRequest;
+            project.dateStart = params.dateStart;
+            project.whoAskFor = params.whoAskFor;
+            project.percentageProgress = params.percentageProgress;
+            project.dateLimit = params.dateLimit;
+            project.remainingDays = params.remainingDays;
+            project.dateDelivery = params.dateDelivery;
+            project.effectiveDays = params.effectiveDays;
+            project.description = params.description;
+            project.dataBase = params.dataBase;
+            project.state = params.state;
+            project.lenguage = params.lenguage;
+            project.version = params.version;
 
-            proyect.save((err, proyectSave) => {
+            project.save((err, projectSave) => {
                 if (err) {
                     res.status(200).send({ message: 'Error al guardar' });
                 } else {
-                    if (!proyectSave) {
+                    if (!projectSave) {
                         res.status(404).send({ message: 'No se pudo guardar' });
                     } else {
-                        res.status(200).send({ proyect: proyectSave });
+                        res.status(200).send({ project: projectSave });
                     }
                 }
             });
@@ -623,15 +622,15 @@ function saveProyect(req, res) {
 
 function saveFile(req, res) {
     var file = req.files.file;
-    var proyectId = req.params.id;
+    var projectId = req.params.id;
 
     /////////////////// CREAR CARPETA ///////////////////////////
-    mkdirp(`./files/${proyectId}`, function (err) {
+    mkdirp(`./files/${projectId}`, function (err) {
         if (err) {
             res.status(200).send({ message: 'Error al crear la carpeta' })
         } else {
             ////////////////////// GUARDAR ARCHIVO ///////////////////////////////
-            file.mv(`./files/${proyectId}/${file.name}`, err => {
+            file.mv(`./files/${projectId}/${file.name}`, err => {
                 if (err) {
                     res.status(200).send({ message: err })
                 } else {
@@ -643,9 +642,9 @@ function saveFile(req, res) {
 }
 
 function listFile(req, res) {
-    var proyectId = req.params.id
+    var projectId = req.params.id
     ///////////////////////// LISTAR ARCHIVOS ////////////////////////////////
-    fs.readdir(`./files/${proyectId}`, function (err, files) {
+    fs.readdir(`./files/${projectId}`, function (err, files) {
         if (err) {
             res.status(200).send({message: 'No se encontro la carpeta'})
         } else {
@@ -657,61 +656,61 @@ function listFile(req, res) {
 //TOMADO DE: https://stackoverrun.com/es/q/1298435
 function deleteFile(req, res) {
     var fs = require('fs');
-    var proyectId = req.params.id;
+    var projectId = req.params.id;
     var nameFile = req.params.name;
 
     ///////////////////// ELIMINAR ARCHIVOS ///////////////////////////
-    fs.unlinkSync(`./files/${proyectId}/${nameFile}`);
+    fs.unlinkSync(`./files/${projectId}/${nameFile}`);
     return res.status(200).send({ message: 'Se elimino correctamente' })
 }
 
-function listProyect(req, res) {
-    Proyect.find((err, proyects) => {
+function listProject(req, res) {
+    Project.find((err, projects) => {
         if (err) {
             res.status(404).send({ message: 'Error al listar' });
         } else {
-            if (!proyects) {
+            if (!projects) {
                 res.status(200).send({ message: 'No se pudo listar' })
             } else {
-                res.status(200).send(proyects);
+                res.status(200).send(projects);
             }
         }
     });
 }
 
-function searchProyect(req, res) {
-    var proyectId = req.params.id;
+function searchProject(req, res) {
+    var projectId = req.params.id;
 
-    Proyect.find({ _id: proyectId }, (err, proyect) => {
+    Project.find({ _id: projectId }, (err, project) => {
         if (err) {
             res.status(404).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send(proyect);
+            res.status(200).send(project);
         }
     });
 }
 
-function updateProyect(req, res) {
+function updateProject(req, res) {
     var params = req.body;
-    var proyectId = req.params.id;
+    var projectId = req.params.id;
 
-    Proyect.findByIdAndUpdate(proyectId, params, { new: true }, (err, proyectUpdate) => {
+    Project.findByIdAndUpdate(projectId, params, { new: true }, (err, projectUpdate) => {
         if (err) {
             res.status(500).send({ message: 'Error al actualizar' });
         } else {
-            if (!proyectUpdate) {
+            if (!projectUpdate) {
                 res.status(404).send({ message: 'No se pudo actualizar' });
             } else {
-                res.status(200).send({ proyectUpdate });
+                res.status(200).send({ projectUpdate });
             }
         }
     });
 }
 
-function deleteProyect(req, res) {
-    var proyectId = req.params.id;
+function deleteProject(req, res) {
+    var projectId = req.params.id;
 
-    Proyect.findByIdAndDelete(proyectId, (err, proyectDelete) => {
+    Project.findByIdAndDelete(projectId, (err, projectDelete) => {
         if (err) {
             res.status(500).send({ message: 'Error al eliminar' });
         } else {
@@ -863,7 +862,7 @@ module.exports = {
     login,
     listUser,
     searchUser,
-    searchUserEmail,
+    searchUserUserName,
     saveCompany,
     listCompany,
     searchCompany,
@@ -877,14 +876,14 @@ module.exports = {
     searchModuleId,
     updateModule,
     deleteModule,
-    saveProyect,
+    saveProject,
     saveFile,
     listFile,
     deleteFile,
-    listProyect,
-    searchProyect,
-    updateProyect,
-    deleteProyect,
+    listProject,
+    searchProject,
+    updateProject,
+    deleteProject,
     saveSimpleTask,
     listSimpleTask,
     searchSimpleTask,

@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var proyectSchema = Schema({
+var projectSchema = Schema({
     _id: String,
     responsability: String,
     priorityDocument: Number,
@@ -21,9 +21,9 @@ var proyectSchema = Schema({
     effectiveDays: String,
     description: String,
     dataBase: String,
-    status: String,
+    state: String,
     lenguage: String,
-    __v: String
+    version: String
 })
 
-module.exports = mongoose.model('proyect', proyectSchema);
+module.exports = mongoose.model('project', projectSchema);

@@ -2,15 +2,15 @@
   var mongoose = require('mongoose');
   var app = require('./app');
   var port = process.env.port || 3789;
-  var proyectController = require('./Controllers/proyectController');
+  var projectController = require('./Controllers/projectController');
 
   mongoose.Promise = global.Promise;
 
-  mongoose.connect('mongodb://localhost:27017/ProyectosMP-Back', {useNewUrlParser: true})
+  mongoose.connect('mongodb://localhost:27017/ProjectosMP-Back', {useNewUrlParser: true})
   .then((err, res)=>{
       console.log('Conexion a la base de datos realizada correctamente');
-    proyectController.saveCountry();
-    proyectController.adminUser();
+    projectController.saveCountry();
+    projectController.adminUser();
     // mensaje();
       app.listen(port,()=>{
         console.log('El servidor de node y express estan conectados');

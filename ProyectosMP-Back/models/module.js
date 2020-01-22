@@ -8,8 +8,9 @@ var moduleSchema = Schema({
     description: String,
     months: Number,
     keys: Number,
-    status: String,
-    'options': {}
+    state: String,
+    options: {},
+    version: String
 })
 
 module.exports = mongoose.model('module', moduleSchema);

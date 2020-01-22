@@ -19,14 +19,14 @@ app.use((req, res, next) => {
 	next();
 });
 
-var proyect_router = require('./routes/proyectRouter');
+var project_router = require('./routes/projectRouter');
 var equipProject_router = require('./routes/sizingRouter');
 
 app.use(bodyParse.urlencoded({extended: false}));
 app.use(bodyParse.json());
 app.use(fileUpload())
 
-app.use('/v1', proyect_router);
+app.use('/v1', project_router);
 app.use('/v1', equipProject_router);
 
 module.exports = app;
