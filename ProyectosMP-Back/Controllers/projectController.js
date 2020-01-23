@@ -581,14 +581,14 @@ function saveProject(req, res) {
     if ('COLLABORATOR' == rol || 'ADVISER' == rol) {
         res.status(200).send({ message: 'No tienes permiso' });
     } else {
-        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.module && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.state && params.version) {
+        if (params._id && params.responsability && params.priorityDocument && params.priorityToday && params.company && params.country && params.modules && params.dateRequest && params.dateStart && params.whoAskFor && params.percentageProgress && params.dateLimit && params.remainingDays && params.dateDelivery && params.effectiveDays && params.state && params.version) {
             project._id = params._id;
             project.responsability = params.responsability;
             project.priorityDocument = params.priorityDocument;
             project.priorityToday = params.priorityToday;
             project.company = params.company;
             project.country = params.country;
-            project.module = params.module;
+            project.modules = params.modules;
             project.dateRequest = params.dateRequest;
             project.dateStart = params.dateStart;
             project.whoAskFor = params.whoAskFor;
@@ -681,9 +681,9 @@ function listProject(req, res) {
 function searchProject(req, res) {
     var projectId = req.params.id;
 
-    Project.find({ _id: projectId }, (err, project) => {
+    Project.findOne({ _id: projectId }, (err, project) => {
         if (err) {
-            res.status(404).send({ message: 'No se pudo listar' });
+            res.status(200).send({ message: 'No se pudo listar' });
         } else {
             res.status(200).send(project);
         }

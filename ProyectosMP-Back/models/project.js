@@ -10,7 +10,7 @@ var projectSchema = Schema({
     priorityToday: Number,
     company: String,
     country: String,
-    module: [],
+    modules: [],
     dateRequest: Date,
     dateStart: Date,
     whoAskFor: String,
