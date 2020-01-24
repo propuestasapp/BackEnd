@@ -80,7 +80,7 @@ function adminUser(req, res) {
     var user = new User();
 
     User.find((err, found) => {
-        if(found.length == 0){
+        if (found.length == 0) {
             user.name = 'ADMINISTRATOR'
             user.lastName = 'ADMINISTRATOR';
             user.userName = 'ADMINISTRATOR';
@@ -194,9 +194,9 @@ function updateUser(req, res) {
             res.status(200).send({ message: 'Error al buscar' });
         } else {
             if (found) {
-                if(found._id != userId){
+                if (found._id != userId) {
                     res.status(200).send({ message: 'Ya estan utilizando el nombre de usuario' });
-                }else{
+                } else {
                     bcrypt.hash(params.password, null, null, function (err2, hash) {
                         if (err2) {
                             res.status(200).send({ message: 'Error al incriptar' });
@@ -483,7 +483,7 @@ function listModule2(req, res) {
 function listModuleVersion(req, res) {
     var vers = req.params.vers;
 
-    Module.find({ $or: [{state: 'ACCEPTED', version: vers}, {state: 'ACCEPTED', version: 'All_Vs'}] }, (err, found) => {
+    Module.find({ $or: [{ state: 'ACCEPTED', version: vers }, { state: 'ACCEPTED', version: 'All_Vs' }] }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar' });
         } else {
@@ -646,7 +646,7 @@ function listFile(req, res) {
     ///////////////////////// LISTAR ARCHIVOS ////////////////////////////////
     fs.readdir(`./files/${projectId}`, function (err, files) {
         if (err) {
-            res.status(200).send({message: 'No se encontro la carpeta'})
+            res.status(200).send({ message: 'No se encontro la carpeta' })
         } else {
             res.status(200).send(files)
         }
@@ -685,7 +685,11 @@ function searchProject(req, res) {
         if (err) {
             res.status(200).send({ message: 'No se pudo listar' });
         } else {
-            res.status(200).send(project);
+            if (!project) {
+                res.status(200).send({ message: 'No se encontró ningun proyecto' })
+            } else {
+                res.status(200).send(project);
+            }
         }
     });
 }
