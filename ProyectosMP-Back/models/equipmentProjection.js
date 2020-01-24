@@ -5,11 +5,11 @@ var Schema = mongoose.Schema;
 
 var equipmentProjectionSchema = Schema({
     project: String,
-    modul: {},
+    module: {},
     transacPeak: Number,
     increase: Number,
     projecTrans: Number,
-    avgTransPercent: Number,
+    avgTRXspercent: Number,
     avgTrans: Number,
     hours: Number,
     transHour: Number,
@@ -36,7 +36,7 @@ var equipmentProjectionSchema = Schema({
     history: Number,
     total: Number,
     coresServer: Number,
-    detach: String
+    split: String
 })
 
 module.exports = mongoose.model('equipmentProjection', equipmentProjectionSchema);

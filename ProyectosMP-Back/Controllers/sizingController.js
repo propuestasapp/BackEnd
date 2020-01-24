@@ -7,15 +7,14 @@ var Sizing = require('../models/sizing');
 function saveEquipmentProjection(req, res) {
     var equipmentProjection = new EquipmentProjection();
     var params = req.body;
-    
-    if (params.equipProject && params.modul && params.transacPeak && params.increase && params.projecTrans && params.o8PHI && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.recordsKey && params.multiplier && params.multiMemoryDB && params.datamart && params.history && params.total) {
-        equipmentProjection.equipProject = params.equipProject;
-        equipmentProjection.modul = params.modul;
-        equipmentProjection.options = params.options;
+
+    if (params.project && params.module && params.transacPeak && params.increase && params.projecTrans && params.avgTRXspercent && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.recordsKey && params.multiplier && params.multiMemoryDB && params.datamart && params.history && params.total) {
+        equipmentProjection.project = params.project;
+        equipmentProjection.module = params.module;
         equipmentProjection.transacPeak = params.transacPeak;
         equipmentProjection.increase = params.increase;
         equipmentProjection.projecTrans = params.projecTrans;
-        equipmentProjection.o8PHI = params.o8PHI;
+        equipmentProjection.avgTRXspercent = params.avgTRXspercent;
         equipmentProjection.avgTrans = params.avgTrans;
         equipmentProjection.hours = params.hours;
         equipmentProjection.transHour = params.transHour;
@@ -42,6 +41,7 @@ function saveEquipmentProjection(req, res) {
         equipmentProjection.history = params.history;
         equipmentProjection.total = params.total;
         equipmentProjection.coresServer = params.coresServer;
+        equipmentProjection.split = params.split
 
         equipmentProjection.save((err, saveCorrect) => {
             if (err) {
@@ -60,8 +60,10 @@ function saveEquipmentProjection(req, res) {
 }
 
 function listEquipmentProjection(req, res) {
+    var projectId = req.params.id;
+    var moduleId = req.params.module
 
-    EquipmentProjection.find((err, found) => {
+    EquipmentProjection.find({ project: projectId }, (err, found) => {
         if (err) {
             res.status(200).send({ message: 'Error al listar' });
         } else {
@@ -75,11 +77,10 @@ function listEquipmentProjection(req, res) {
 }
 
 function searchEquipmentProjection(req, res) {
-    var equipmentProjectionId = req.params.id;
+    var projectId = req.params.id;
     var mod = req.params.mod;
 
-    EquipmentProjection.findOne({ equipProject: equipmentProjectionId, "module._id": mod }, (err, equipmentProjection) => {
-
+    EquipmentProjection.findOne({ project: projectId, "module._id": mod }, (err, equipmentProjection) => {
         if (err) {
             res.status(200).send({ message: 'No se pudo buscar' });
         } else {
@@ -94,27 +95,15 @@ function searchEquipmentProjection(req, res) {
 
 function updateEquipmentProjection(req, res) {
     var params = req.body;
-    var equipmentProjectionId = req.params.id;
-    var mod = req.params.mod;
 
-    EquipmentProjection.find({ equipProject: equipmentProjectionId, modul: mod }, (err, equipmentProjection) => {
+    EquipmentProjection.findByIdAndUpdate(params._id, params, { new: true }, (err, equipmentUp) => {
         if (err) {
-            res.status(404).send({ message: 'No se puedo buscar' });
+            res.status(200).send({ message: 'Error al actualizar' });
         } else {
-            if (!equipmentProjection) {
-                res.status(200).send({ message: 'No existe' });
+            if (!equipmentUp) {
+                res.status(200).send({ message: 'No se pudo actualizar' });
             } else {
-                EquipmentProjection.findByIdAndUpdate(equipmentProjection[0]._id, params, { new: true }, (err, equipmentProjectionUpdate) => {
-                    if (err) {
-                        res.status(500).send({ message: 'Error al actualizar' });
-                    } else {
-                        if (!equipmentProjectionUpdate) {
-                            res.status(404).send({ message: 'No se pudo actualizar' });
-                        } else {
-                            res.status(200).send(equipmentProjectionUpdate);
-                        }
-                    }
-                });
+                res.status(200).send(equipmentUp);
             }
         }
     });
@@ -140,15 +129,15 @@ function deleteEquipmentProjection(req, res) {
 function deleteAllEP(req, res) {
     var project = req.params.id;
 
-    EquipmentProjection.find({equipProject: project}, (err, found) => {
-        if(err){
+    EquipmentProjection.find({ equipProject: project }, (err, found) => {
+        if (err) {
             res.status(500).send({ message: 'Error al buscar' });
-        }else{
-            if(!found){
+        } else {
+            if (!found) {
                 res.status(200).send({ message: 'No se encontró nada' });
-            }else{
-                for(let i = 0; i < found.length; i++){
-                    EquipmentProjection.findByIdAndDelete(found[i]._id,(err2, del) => {
+            } else {
+                for (let i = 0; i < found.length; i++) {
+                    EquipmentProjection.findByIdAndDelete(found[i]._id, (err2, del) => {
                         if (err) {
                             res.status(500).send({ message: 'Error al eliminar' });
                         } else {
@@ -236,11 +225,11 @@ function listSizing(req, res) {
 function searchSizing(req, res) {
     var sizingId = req.params.id;
 
-    Sizing.find({ _id: sizingId}, (err, encontrado) => {
+    Sizing.find({ _id: sizingId }, (err, encontrado) => {
         if (err) {
             res.status(200).send({ message: 'Error al buscar' })
         } else {
-            if (!encontrado ) {
+            if (!encontrado) {
                 res.status(200).send({ message: 'No se encontro nada' });
             } else {
                 res.status(200).send(encontrado)
