@@ -700,10 +700,10 @@ function updateProject(req, res) {
 
     Project.findByIdAndUpdate(projectId, params, { new: true }, (err, projectUpdate) => {
         if (err) {
-            res.status(500).send({ message: 'Error al actualizar' });
+            res.status(200).send({ message: 'Error al actualizar' });
         } else {
             if (!projectUpdate) {
-                res.status(404).send({ message: 'No se pudo actualizar' });
+                res.status(200).send({ message: 'No se pudo actualizar' });
             } else {
                 res.status(200).send({ projectUpdate });
             }

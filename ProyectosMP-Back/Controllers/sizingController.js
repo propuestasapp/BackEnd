@@ -61,7 +61,6 @@ function saveEquipmentProjection(req, res) {
 
 function listEquipmentProjection(req, res) {
     var projectId = req.params.id;
-    var moduleId = req.params.module
 
     EquipmentProjection.find({ project: projectId }, (err, found) => {
         if (err) {
@@ -157,9 +156,9 @@ function saveSizing(req, res) {
     var params = req.body;
     var sizing = new Sizing();
 
-    if (params._id && params.proyect && params.trxPeak && params.coresDB && params.memoryDB && params.datamart && params.history && params.temp && params.logs && params.total && params.coresSrv && params.numberServers && params.coresServer && params.memoryServer && params.coresAlert && params.memoryAlert && params.version) {
+    if (params._id && params.equipments && params.versions && params.versionNumber) {
 
-        Sizing.findOne({ proyect: params.proyect, version: params.version }, (err, found) => {
+        Sizing.findOne({ _id: params._id }, (err, found) => {
             if (err) {
                 res.status(404).send({ message: 'No se puedo buscar' });
             } else {
@@ -167,26 +166,9 @@ function saveSizing(req, res) {
                     res.status(200).send({ message: 'Ya existe' });
                 } else {
                     sizing._id = params._id;
-                    sizing.proyect = params.proyect;
-                    sizing.trxPeak = params.trxPeak;
-                    sizing.coresDB = params.coresDB;
-                    sizing.memoryDB = params.memoryDB;
-                    sizing.datamart = params.datamart;
-                    sizing.history = params.history;
-                    sizing.temp = params.temp;
-                    sizing.logs = params.logs;
-                    sizing.total = params.total;
-                    sizing.coresSrv = params.coresSrv;
-                    sizing.numberServers = params.numberServers;
-                    sizing.coresServer = params.coresServer;
-                    sizing.memoryServer = params.memoryServer;
-                    sizing.coresAlert = params.coresAlert;
-                    sizing.memoryAlert = params.memoryAlert;
-                    sizing.version = params.version;
-                    sizing.combinar = params.combinar;
-                    sizing.comCores = params.comCores;
-                    sizing.comMemory = params.comMemory;
-                    sizing.environments = params.environments;
+                    sizing.equipments = params.equipments;
+                    sizing.versions = params.versions;
+                    sizing.versionNumber = params.versionNumber;
 
                     sizing.save((err, saveCorrect) => {
                         if (err) {
@@ -236,17 +218,22 @@ function searchSizing(req, res) {
             }
         }
     })
-    // Sizing.find({ _id: sizingId }, (err, found) => {
-    //     if (err) {
-    //         res.status(200).send({ message: 'Error al buscar' });
-    //     } else {
-    //         if (!found) {
-    //             res.status(200).send({ message: 'No se encontro nada' });
-    //         } else {
-    //             res.status(200).send([found])
-    //         }
-    //     }
-    // })
+}
+
+function searchSizingPro(req, res) {
+    var id = req.params.id;
+
+    Sizing.find({ _id: {$regex: id} }, (err, encontrado) => {
+        if (err) {
+            res.status(200).send({ message: 'Error al buscar' })
+        } else {
+            if (!encontrado) {
+                res.status(200).send({ message: 'No se encontro nada' });
+            } else {
+                res.status(200).send(encontrado)
+            }
+        }
+    })
 }
 
 function updateSizing(req, res) {
@@ -303,6 +290,7 @@ module.exports = {
     saveSizing,
     listSizing,
     searchSizing,
+    searchSizingPro,
     updateSizing,
     deleteSizing
 }
