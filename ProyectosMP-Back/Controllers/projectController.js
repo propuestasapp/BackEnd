@@ -325,7 +325,7 @@ function listCompany(req, res) {
         } else {
             res.status(200).send({ companies: companies, rol: req.user });
         }
-    });
+    }).sort( { name: 1 } );
 }
 
 function searchCompany(req, res) {
@@ -397,7 +397,7 @@ function saveModule(req, res) {
         } else {
             modules.state = 'REVIEW'
         }
-        if (params.name && params.description && params.months && params.keys && params.version) {
+        if (params.name && params.description && params.months >= 0 && params.keys >= 0 && params.version) {
             modules.name = params.name;
             modules.description = params.description;
             modules.months = params.months;
@@ -441,7 +441,7 @@ function listModule(req, res) {
                 res.status(200).send({ modules: found })
             }
         }
-    });
+    }).sort( { name: 1 } );
 }
 
 function listModule2(req, res) {
@@ -477,7 +477,7 @@ function listModule2(req, res) {
                 });
             }
         }
-    });
+    }).sort( { name: 1 } );
 }
 
 function listModuleVersion(req, res) {
@@ -493,7 +493,7 @@ function listModuleVersion(req, res) {
                 res.status(200).send({ modules: found })
             }
         }
-    });
+    }).sort( { name: 1 } );
 }
 
 function searchModuleId(req, res) {

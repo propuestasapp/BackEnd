@@ -8,7 +8,7 @@ function saveEquipmentProjection(req, res) {
     var equipmentProjection = new EquipmentProjection();
     var params = req.body;
 
-    if (params.project && params.module && params.transacPeak && params.increase && params.projecTrans && params.avgTRXspercent && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys && params.recordsKey && params.multiplier && params.multiMemoryDB && params.datamart && params.history && params.total) {
+    if (params.project && params.module && params.transacPeak && params.increase && params.projecTrans && params.avgTRXspercent && params.avgTrans && params.hours && params.transHour && params.minutes && params.transMinute && params.seconds && params.transSecond && params.trxsCore && params.trxsSeg && params.coresAnalysis && params.recordLength && params.percentageOccupation && params.onlineHistory && params.keys >= 0 && params.recordsKey && params.multiplier && params.multiMemoryDB && params.datamart >= 0 && params.history && params.total) {
         equipmentProjection.project = params.project;
         equipmentProjection.module = params.module;
         equipmentProjection.transacPeak = params.transacPeak;
@@ -167,6 +167,7 @@ function saveSizing(req, res) {
                 } else {
                     sizing._id = params._id;
                     sizing.equipments = params.equipments;
+                    sizing.numUsers = params.numUsers;
                     sizing.versions = params.versions;
                     sizing.versionNumber = params.versionNumber;
 
