@@ -41,7 +41,6 @@ api.put('/deleteModule/:id', projectController.deleteModule);
 api.post('/saveProject/:rol', projectController.saveProject);
 api.post('/saveFile/:id', projectController.saveFile);
 api.get('/listFile/:id', projectController.listFile);
-api.get('/downloadFile/:id/:name', projectController.downloadFile)
 api.put('/deleteFile/:id/:name', projectController.deleteFile);
 api.get('/listProject', projectController.listProject);
 api.post('/searchProject/:id', projectController.searchProject);

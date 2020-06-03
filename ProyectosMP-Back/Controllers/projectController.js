@@ -170,9 +170,9 @@ function searchUser(req, res) {
 }
 
 function searchUserUserName(req, res) {
-    var userName = req.params.userName;
+    var mail = req.params.mail;
 
-    User.findOne({ userName: userName }, (err, user) => {
+    User.findOne({ email: mail }, (err, user) => {
         if (err) {
             res.status(200).send({ message: 'No se pudo buscar' });
         } else {
@@ -678,24 +678,6 @@ function listProject(req, res) {
     });
 }
 
-/////////////////// DESCARGAR ARCHIVO ////////////////////////
-function downloadFile(req, res){
-    var projectId = req.params.id;
-    var nameFile = req.params.name;
-    var path = require('path');
-    var mime = require('mime');
-    
-    var file = './files/' + projectId + '/' + nameFile;
-    var filename = path.basename(file);
-    var mimetype = mime.lookup(file);
-    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-    res.setHeader('Content-type', mimetype);
-    var filestream = fs.createReadStream(file);
-    filestream.pipe(res);
-
-    //Fuente: https://www.iteramos.com/pregunta/29109/descargar-un-archivo-de-nodejs-servidor-usando-express
-}
-
 function searchProject(req, res) {
     var projectId = req.params.id;
 
@@ -901,7 +883,6 @@ module.exports = {
     saveProject,
     saveFile,
     listFile,
-    downloadFile,
     deleteFile,
     listProject,
     searchProject,
