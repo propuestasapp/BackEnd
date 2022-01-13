@@ -5,9 +5,8 @@ var Schema = mongoose.Schema;
 
 var sizingSchema = Schema({
     _id: String,
-    equipments: [],
-    numUsers: Number,
-    versions: [],
+    equipments: {},
+    versions: {},
     versionNumber: Number
 })
 

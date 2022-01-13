@@ -17,6 +17,7 @@ var mkdirp = require('mkdirp');
 ///////////////////////////////////// LISTAR ARCHIVOS //////////////////////////////////////////
 //TOMADO DE: https://como.help/nodejs/javascript/como-listar-los-archivos-de-un-folder-con-nodejs
 var fs = require('fs');
+const { Console } = require('console');
 
 /******************************************** COUNTRY ****************************************************/
 function saveCountry(req, res) {
@@ -402,6 +403,7 @@ function saveModule(req, res) {
             modules.description = params.description;
             modules.months = params.months;
             modules.keys = params.keys;
+            console.log(params.options);
             modules.options = params.options;
             modules.version = params.version;
 
