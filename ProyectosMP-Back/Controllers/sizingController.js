@@ -85,11 +85,10 @@ function listEquipmentProjection(req, res) {
 
 function searchEquipmentProjection(req, res) {
     var projectId = req.params.id;
-    var mod = req.params.mod;
 
-    EquipmentProjection.findOne({ project: projectId, "module._id": mod }, (err, equipmentProjection) => {
+    EquipmentProjection.findOne({ project: projectId }, (err, equipmentProjection) => {
         if (err) {
-            res.status(200).send({ message: 'No se pudo buscar' });
+            res.status(200).send({ message: 'No se pudo buscar',error: err });
         } else {
             if (!equipmentProjection) {
                 res.status(200).send({ message: 'No existe' });

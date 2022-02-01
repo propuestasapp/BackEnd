@@ -524,7 +524,7 @@ function searchModuleName(req, res) {
             if (!modul) {
                 res.status(200).send({ message: 'No existe el módulo' })
             } else {
-                res.status(200).send({ modul });
+                res.status(200).send({modul});
             }
         }
     });

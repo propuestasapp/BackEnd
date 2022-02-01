@@ -7,7 +7,7 @@ var api = express.Router();
 /************************ EQUIPMENT PROJECTION *********************************/
 api.post('/saveEquipProject', sizingController.saveEquipmentProjection);
 api.get('/listEquipProject/:id', sizingController.listEquipmentProjection);
-api.post('/searchEquipProject/:id/:mod', sizingController.searchEquipmentProjection);
+api.post('/searchEquipProject/:id', sizingController.searchEquipmentProjection);
 api.put('/updateEquipProject', sizingController.updateEquipmentProjection);
 api.put('/deleteEquipProject/:id', sizingController.deleteEquipmentProjection);
 api.put('/deleteAllEP/:id', sizingController.deleteAllEP);
